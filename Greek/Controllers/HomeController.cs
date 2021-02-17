@@ -84,7 +84,7 @@ namespace whatscooking.Controllers
                 {
                     using (var message = new MailMessage(EmailFrom, EmailTo))
                     {
-                        message.Subject = "whatscookin.club Comments from user " + model.Email;
+                        message.Subject = "greekcuisine.today/ Comments from user " + model.Email;
                         message.Body = model.Comments;
                         MailAddress bcc = new MailAddress(EmailFrom);
                         message.CC.Add(bcc);
