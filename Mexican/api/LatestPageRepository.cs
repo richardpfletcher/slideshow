@@ -20,7 +20,7 @@ namespace Cook.API
             {
                 Uri host = new Uri(ConfigurationManager.ConnectionStrings["LocalURI"].ConnectionString);
                 string path = "";
-                path = "/RestServiceImpl.svc/GetLatest/";
+                path = "/RestServiceImpl.svc/GetLatestMexican/";
 
                
                 //string path = "/CookRestDeploy/RestServiceImpl.svc/GetLatest/";
