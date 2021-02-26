@@ -21,8 +21,9 @@
 
 </head>
 
-
-<br /><br /><br />
+<div style="text-align: right; color:white;font-size: medium" ;>
+    indiancuisine.today
+</div>
 
     <div style="width: 50%">
         <ul id="demo1">
@@ -47,11 +48,16 @@
 
                     }
 
+                    if (winner.Title.Length >= 40)
+                    {
+                        winner.Title = winner.Title.Substring(0, 40);
+
+                    }
+
 
 
             <li>
-                <h2 style="color:white;">@winner.Title  </h2>
-                <h3 style="color:blue;">Select picture for info </h3>
+                <h3 style="color:white;">@winner.Title &nbsp;&nbsp;&nbsp;&nbsp; <label style="color:blue;">select image for info</label> </h3>
 
                 <a href="https://whatscookingtreasures.com/Home/Display?row=@winner.RECEIPTNO">
                     @try
