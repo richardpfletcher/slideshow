@@ -1,0 +1,459 @@
+﻿
+@{
+    ViewBag.Title = "Search";
+}
+
+@model Stories.Models.Story
+
+
+
+<!DOCTYPE html>
+
+<head>
+    <title>Search</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- JavaScript -->
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+    <!-- Default theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/default.min.css" />
+    <!-- Semantic UI theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/semantic.min.css" />
+    <!-- Bootstrap theme -->
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/themes/bootstrap.min.css" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="~/Scripts/jquery.redirect.js"></script>
+
+
+
+
+</head>
+
+<h2> <input type="button" id="Search" value="Search" /></h2>
+
+<div class="container">
+
+    <br>
+
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div id="home" class="container tab-pane active">
+            <br>
+
+            <div class="page-wrapper">
+                <div class="row">
+                    <div class="col-sm-4">
+
+
+
+                        <div>
+
+                            <table style="width: 55%">
+                                <tr>
+                                    <td>
+                                        @Html.Label("Source")
+                                    </td>
+
+                                </tr>
+                                <tr>
+
+                                    <td>
+                                        @Html.DropDownList("StoryCategorytName", (IEnumerable<SelectListItem>)ViewData["StoryCategorytNameData"])
+                                    </td>
+
+                                </tr>
+
+
+                            </table>
+
+
+
+                            <table style="width: 55%">
+
+
+
+                                <tr>
+                                    <td>
+                                        @Html.Label("Title")
+                                    </td>
+
+                                </tr>
+                                <tr>
+
+                                    <td>
+                                        @Html.DropDownList("jakataMaster", (IEnumerable<SelectListItem>)ViewData["jakataMasterData"])
+                                    </td>
+
+                                </tr>
+                            </table>
+
+                            <table style="width: 55%">
+                                <tr>
+                                    <td>
+                                        @Html.Label("Story Teller")
+                                    </td>
+
+                                </tr>
+                                <tr>
+
+                                    <td>
+                                        @Html.DropDownList("newReader", (IEnumerable<SelectListItem>)ViewData["newReadersData"])
+                                    </td>
+
+
+
+                                </tr>
+                            </table>
+
+
+
+
+                            <table style="width: 55%">
+                                <tr>
+                                    <td>
+                                        @Html.Label("Animal")
+                                    </td>
+
+                                </tr>
+                                <tr>
+
+                                    <td>
+
+                                        @for (int i = 0; i < Model.animalCombo.items.Count; i++)
+                                        {
+                                    <tr>
+                                        <td>
+                                            @*@Html.CheckBoxFor(m => Model.animalCombo.items[i].Selected)*@
+                                            @Html.CheckBoxFor(m => Model.animalCombo.items[i].Selected, new { @class = "animalCombo" })
+
+
+
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(m => Model.animalCombo.items[i].Text, new { @class = "animalCombo" })
+                                            @Html.HiddenFor(m => Model.animalCombo.items[i].Value, new { @class = "animalCombo" })
+                                            @Html.HiddenFor(m => Model.animalCombo.items[i].Text, new { @class = "animalCombo" })
+                                        </td>
+                                    </tr>
+
+
+                                }
+
+
+                                    </table>
+
+                                    <table style="width: 55%">
+                                        <tr>
+                                            <td>
+                                                @Html.Label("Moral")
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+
+                                            <td>
+                                                @Html.DropDownList("moralType", (IEnumerable<SelectListItem>)ViewData["moralTypeData"])
+                                            </td>
+
+                                        </tr>
+
+
+                                    </table>
+
+
+                                </div>
+
+
+
+                            </div>
+                            <div class="col-sm-8">
+                                <div>
+
+                                    <textarea id="elmeStory" name="elmeStory" rows="30" cols="90" style="width: 100%">
+		  
+			</textarea>
+                                </div>
+                                <div>
+                                    Comments
+                                    <textarea id="comments" name="elmeStory" rows="30" cols="90" style="width: 100%">
+		  
+			</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div id="menu1" class="container tab-pane fade">
+                    <br>
+                    <h3>Menu 1</h3>
+                    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                </div>
+                <div id="menu2" class="container tab-pane fade">
+                    <br>
+                    <h3>Menu 2</h3>
+                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+                </div>
+            </div>
+        </div>
+
+        <script type="text/javascript">
+
+            $(function () {
+
+                $("#Search").click(function () {
+
+
+
+                    var idslist = "";
+                    var counter = 0;
+                    var counter1 = 0;
+                    var animalChoosen = "";
+
+                    $("input:checkbox[class=animalCombo]").each(function () {
+
+                        if ($(this).is(":checked")) {
+                            var userid = $(this).attr("value");
+                            if (idslist != "") {
+                                idslist = idslist + ',' + userid;
+
+
+
+                            }
+                            else
+                                idslist = userid;
+                            animalChoosen = $("#animalCombo_items_" + counter1 + "__Value").val() + ',' + animalChoosen;
+                        }
+                        counter1++;
+                    });
+
+                    if (counter1 == 0) {
+                        //alert('You must choose an animal type');
+                        animalChoosen = "0";
+                    }
+
+
+                    var jakataMaster = $("#jakataMaster").val();
+
+
+                    var title = $("#jakataMaster").val();
+
+                    if (title == "0") {
+                        //alert('Title is required');
+                        //document.getElementById('jakataMaster').focus();
+                        title = "0";
+                        //return;
+                    }
+
+
+                    var moralType = $("#moralType").val();
+                    if (moralType == "0") {
+                        //alert('Moral Type is required');
+                        //document.getElementById('moralType').focus();
+                        moralType = 0;
+                        //return;
+                    }
+
+                    var StoryCategorytName = $("#StoryCategorytName").val();
+                    if (StoryCategorytName == "0") {
+                        //alert('Moral Type is required');
+                        //document.getElementById('moralType').focus();
+                        StoryCategorytName = 1;
+                        //return;
+                    }
+
+                    var newReader = $("#newReader").val();
+                    if (newReader == "0") {
+                        //alert('Moral Type is required');
+                        //document.getElementById('moralType').focus();
+                        newReader = 0;
+                        //return;
+                    }
+
+
+
+
+                    var elmeStory = document.getElementById('elmeStory').value;
+
+                    var comments = document.getElementById('comments').value;
+
+
+
+                    if (comments.length == 0) {
+                        //alert('The Story field cant be empty');
+                        //document.getElementById('elmeStory').focus();
+                        comments = 0;
+                        //return;
+                    }
+
+                    var userIdPost = $("#newReader").val();
+                    if (newReader == "0") {
+                        //alert('Moral Type is required');
+                        //document.getElementById('moralType').focus();
+                        userIdPost = 0;
+                        //return;
+                    }
+
+                    var resultJSON = {
+                        JakataID: jakataMaster, StoryCategorytName: StoryCategorytName, Title: jakataMaster, AnimalType: animalChoosen, MoralType: moralType, Comments: comments, Stories: elmeStory, UserID: newReader
+                    };
+
+                    console.log(resultJSON);
+
+                    var env = '@System.Configuration.ConfigurationManager.AppSettings["Enviroment"]';
+
+                    var apiUrl = "";
+                    var localStoryUrl = "";
+                    var url = "";
+
+                    if (env == "Dev") {
+                        apiUrl = '@System.Configuration.ConfigurationManager.AppSettings["LocalWebApi"]';
+                        localStoryUrl = '@System.Configuration.ConfigurationManager.AppSettings["LocalStoryUrl"]';
+                        url = "http://localhost:5199/api/Storiesapi/search";
+                    }
+                    else {
+
+                        apiUrl = '@System.Configuration.ConfigurationManager.AppSettings["ProductionWebApi"]';
+                        localStoryUrl = '@System.Configuration.ConfigurationManager.AppSettings["LocalStoryUrl"]';
+                        url = "https://api.storyteller.today/api/Storiesapi/search";
+
+                    }
+                    //var apiUrl = '@System.Configuration.ConfigurationManager.AppSettings["LocalWebApi"]';
+
+
+                    //var localStoryUrl = '@System.Configuration.ConfigurationManager.AppSettings["LocalStoryUrl"]';
+
+                    $.ajax({
+                        type: 'POST',
+                        url: url,
+
+                        //put back in
+                        //url: "http://localhost:5199/api/Storiesapi/search",
+                        data: resultJSON,
+                        dataType: "json",
+                        //dataType: "application/json" ,
+
+
+                        success: function (data, status, xhr) {
+
+                            alertify.success("Story Saved");
+                            if (data == "") {
+                                alertify.success("No records found");
+                                return;
+                            }
+
+                            //window.location.href = "http://localhost:5199/Home/SearchResults?searchResults=" + data + "&page=1&userIdPost="+userIdPost;
+                            //window.location.href = "http://jataka.fun/Home/SearchResults?searchResults=" + data + "&page=1&userIdPost=" + userIdPost;
+                            window.location.href = "/Home/SearchResults?searchResults=" + data + "&page=1&userIdPost=" + userIdPost;
+
+
+                            //window.location.href = localStoryUrl + "Home/SearchResults?searchResults=" + data + "&page=1&userIdPost=" + userIdPost;
+
+
+                            console.log(data[0]);
+
+
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert(xhr.status);
+                            alert(thrownError);
+                        }
+
+                    });
+
+                });
+
+            });
+        </script>
+
+        <script type="text/javascript">
+            $(function () {
+                $("#StoryCategorytName").change(function () {
+                    var selectedText = $(this).find("option:selected").text();
+                    //var StoryCategorytName = $(this).find("option:selected").value();
+                    var StoryCategorytName = $("#StoryCategorytName").val();
+                    StoryCategorytName = parseInt(StoryCategorytName);
+
+
+                    var env = 'Prod';
+
+                    var apiUrl = "";
+
+                    if (env == "Dev") {
+                        //apiUrl = 'http://localhost:5199/';
+                        apiUrl = "http://localhost:5199/api/specificStoryDropdown/getjatakabyyspecific";
+
+                    }
+                    else {
+
+
+                        //apiUrl = "https://api.storyteller.today/api/StoryCategorytName/GetStoryCategoryNameByID?id=" + StoryCategorytName;
+                        apiUrl = "https://api.storyteller.today/api/specificStoryDropdown/getjatakabyyspecific";
+
+                    }
+
+                    //var apiUrl = 'http://localhost:5199/';
+
+                    var resultJSON = {
+                        id: StoryCategorytName
+                    };
+
+                    $.ajax({
+                        type: 'GET',
+                        url: apiUrl,
+                        //url: apiUrl+"api/Project/getReadersSpecificStory",
+                        //url: "http://localhost:5199/api/Project/getReadersSpecificStory",
+
+
+                        data: resultJSON,
+                        dataType: "json",
+
+
+                        success: function (data, status, xhr) {
+                            //alert("Success: " + xhr.status + " : " + xhr.statusText);
+
+                            var jakataMasterLists = data.data[0].jakataMasterLists;
+
+                            var s = '<option value="-0">Please Select ';
+                            for (var i = 0; i < jakataMasterLists.length; i++) {
+                                s += '<option value="' + jakataMasterLists[i].ID + '">' + jakataMasterLists[i].Title + '</option>';
+                            }
+                            $("#jakataMaster").html(s);
+
+
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            alert(xhr.status);
+                            alert(thrownError);
+                        }
+
+
+
+
+                    });
+
+
+                });
+            });
+        </script>
+
+
+
+
+
+
+
+
+
+
+
+
