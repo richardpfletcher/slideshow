@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mexican", "Mexican\mexican.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "greek", "Greek\greek.csproj", "{AFB62BDC-E020-4F47-992A-F1529A91E887}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Twoboots", "Twoboots\Twoboots.csproj", "{0ADCD198-8EF7-4B2F-801B-FBA1D5275D41}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{AFB62BDC-E020-4F47-992A-F1529A91E887}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AFB62BDC-E020-4F47-992A-F1529A91E887}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AFB62BDC-E020-4F47-992A-F1529A91E887}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0ADCD198-8EF7-4B2F-801B-FBA1D5275D41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0ADCD198-8EF7-4B2F-801B-FBA1D5275D41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0ADCD198-8EF7-4B2F-801B-FBA1D5275D41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0ADCD198-8EF7-4B2F-801B-FBA1D5275D41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
