@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewBag.Title = "Uploaded File";
+}
+
+<h2>Uploaded File</h2>
+
+@{
+
+    string filename1 = (string)ViewData["filename1"];
+    //filename1 = filename1 + " Uploaded";
+
+    string filename = "https://twoboots.today/images/" + filename1;
+    string title = (string)ViewData["title1"];
+
+}
+
+
+@title
+<br />
+
+<img src="@filename" width="300" height="300" />
+

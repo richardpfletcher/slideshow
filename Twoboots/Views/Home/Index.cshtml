@@ -4,10 +4,10 @@
 
 <head>
     @*<script src="https://code.jquery.com/jquery-3.1.1.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
-    <script src="~/Scripts/slippry.min.js"></script>
-   
-    <meta name="viewport" content="width=device-width">
-    <link href="~/Content/slippry.css" rel="stylesheet" />*@
+        <script src="~/Scripts/slippry.min.js"></script>
+
+        <meta name="viewport" content="width=device-width">
+        <link href="~/Content/slippry.css" rel="stylesheet" />*@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 
@@ -19,199 +19,162 @@
 
 
 
+
 </head>
+
+@*<audio src="/Content/Fresca Pizza.mp3" autoplay >
+        <p>If you are reading this, it is because your browser does not support the audio element.</p>
+    </audio>*@
+
+<embed src="/Content/Fresca Pizza.mp3" loop="true" autostart="true" width="2"
+       height="0">
 
 @*<center><h1 style="color:white; font-size: medium">mexicancuisine.today</h1></center>*@
 
-<div style="text-align: right; color:white;font-size: medium";>
-    mexicancuisine.today
+<div style="text-align: right; color:white;font-size: medium" ;>
+    twoboots.today
 </div>
 
-    <div style="width: 100%">
-        <ul id="demo1">
+<div style="width: 100%">
+    <ul id="demo1">
 
-            @try
+        @try
+        {
+            //string title = ViewData["firstOne"].ToString();
+            string title = "hello";
+            int iRow = 0;
+
+            List<Stories.Factory.AnimalTypeList> myList = new List<Stories.Factory.AnimalTypeList>();
+            Stories.Factory.AnimalTypeList list = new Stories.Factory.AnimalTypeList();
+            list = ViewData["MyFavortiesData"] as Stories.Factory.AnimalTypeList;
+
+            for (int i = 0; i < list.animalTypeLists.Count; i++)
             {
-                string title = ViewData["firstOne"].ToString();
-                int iRow = 0;
 
-                foreach (Cook.Models.MyFavoritesModel winner
-              in (List<Cook.Models.MyFavoritesModel>)ViewData["MyFavortiesData"])
+
+                if (title.ToUpper() != list.animalTypeLists[i].Title.Substring(0, 1).ToUpper())
                 {
 
 
-                    if (title.ToUpper() != winner.Title.Substring(0, 1).ToUpper())
-                    {
+                    title = list.animalTypeLists[i].Title.Substring(0, 1);
+                    iRow = 0;
 
 
-                        title = winner.Title.Substring(0, 1);
-                        iRow = 0;
-
-
-                    }
-
-                    if (winner.Title.Length >= 40)
-                    {
-                        winner.Title = winner.Title.Substring(0, 40);
-
-                    }
-
-
-
-                    <li>
-
-                        <br />
-                        <h2 style="color:white;">@winner.Title &nbsp;&nbsp;&nbsp;&nbsp; <label style="color:blue;">select image for info</label> </h2>
-                        @*<h3 style="color:blue;">Select picture for info </h3>*@
-
-                        <a href="https://whatscookingtreasures.com/Home/Display?row=@winner.RECEIPTNO">
-                            @try
-                            {
-                                string image = winner.picture;
-                                if (image.Length > 0)
-                                {
-                                    //string imagePath = "/images/";
-                                    string imagePath = "https://whatscookingtreasures.com/images/upload/";
-
-                                    <img src="@imagePath@image" style="max-width: 100%; max-height: 100%" />
-                                }
-                                else
-                                {
-                                    <img src="../Images/bowl.jpg" style="max-width: 100%; max-height: 100%" />
-                                }
-                            }
-                            catch
-                            {
-                            }
-                        </a>
-
-
-
-                    </li>
-
-                    iRow++;
                 }
 
-            }
-            catch
-            {
-            }
+                if (list.animalTypeLists[i].Title.Length >= 40)
+                {
+                    list.animalTypeLists[i].Title = list.animalTypeLists[i].Title.Substring(0, 40);
 
-        </ul>
-    </div>
+                }
 
-    @*<section class="demo_wrapper">
-            <article class="demo_block">
-                <h1 id="main-title">Simple demo with default config</h1>
-                <a href="#glob" class='prev'>Prev</a> / <a href="#glob" class='next'>Next</a>
-                || <a href="#glob" class='init'>Init</a> | <a href="#glob" class='reset'>Destroy</a> | <a href="#glob" class='reload'>Reload</a>
-                || <a href="#glob" class='stop'>Stop</a> | <a href="#glob" class='start'>Start</a>
-                                                           <ul id="demo1">
-                                                               <li>
+                string link1 = "";
 
+                if (list.animalTypeLists[i].url != null)
+                {
 
-                                                                   <a href="https://whatscookingtreasures.com/Home/Display?row=652" target='_blank'>
-                                                                       <img src="/images/652.jpg" width="400" height="300" alt="" />
-                                                                   </a>
-
-                                                                   <br />
-                                                                   Ginger syrup
-
-                                                               </li>
-
-                                                               <li>
-
-
-                                                                   <a href="https://whatscookingtreasures.com/Home/Display?row=653" target='_blank'>
-                                                                       <img src="/images/653.jpg" width="400" height="300" alt="" />
-                                                                   </a>
-
-                                                                   <br />
-                                                                   Vanilla  ice cream with ginger syrup
-
-                                                               </li>
-                                                           </ul>
-            </article>
-        </section>*@
-
-
-    <script>
-        $(function () {
-
-
-            var demo1 = $("#demo1").slippry({
-                //transition: 'fade',
-                transition: 'horizontal',
-                useCSS: true,
-                //speed: 1000,
-                speed: 5000,
-                pause: 6000,
-                pager: false,
-                auto: true,
-                preload: 'visible',
-
-                // transitions
-                //transition: 'kenburns', // fade, horizontal, kenburns, false
-                kenZoom: 140,
-                speed: 2000 // time the transition takes (ms)
-
-
-
-            });
-
-            $('.init').click(function () {
-                demo1 = $("#demo1").slippry();
-                return false;
-            });
+                    link1 = list.animalTypeLists[i].url;
+                }
+                else
+                {
+                    link1 = "http://twoboots.com";
+                }
 
 
 
 
-        });
-    </script>
+                            <li>
 
-    @*<script>
-            $(function () {
-                var demo1 = $("#demo1").slippry({
-                    // transition: 'fade',
-                    // useCSS: true,
-                    // speed: 1000,
-                    // pause: 3000,
-                    // auto: true,
-                    // preload: 'visible',
-                    // autoHover: false
-                });
+                                <br />
+                                <h2 style="color:white;">@list.animalTypeLists[i].Title &nbsp;&nbsp;&nbsp;&nbsp; <label style="color:blue;">select image for info</label> </h2>
 
-                $('.stop').click(function () {
-                    demo1.stopAuto();
-                });
 
-                $('.start').click(function () {
-                    demo1.startAuto();
-                });
 
-                $('.prev').click(function () {
-                    demo1.goToPrevSlide();
-                    return false;
-                });
-                $('.next').click(function () {
-                    demo1.goToNextSlide();
-                    return false;
-                });
-                $('.reset').click(function () {
-                    demo1.destroySlider();
-                    return false;
-                });
-                $('.reload').click(function () {
-                    demo1.reloadSlider();
-                    return false;
-                });
-                $('.init').click(function () {
-                    demo1 = $("#demo1").slippry();
-                    return false;
-                });
-            });
-        </script>*@
+
+                                @*<a href="https://whatscookingtreasures.com/Home/Display?row=@list.animalTypeLists[i].RECEIPTNO">*@
+
+
+
+
+                                <a href="@link1">
+
+                                    @try
+                                    {
+
+
+
+                                        string image = list.animalTypeLists[i].Picture;
+                                        if (image.Length > 0)
+                                        {
+                                            //string imagePath = "/images/";
+                                            string imagePath = "https://twoboots.today/images/";
+
+                                            <img src="@imagePath@image" style="max-width: 100%; max-height: 100%" />
+                                        }
+                                        else
+                                        {
+                                            <img src="../Images/bowl.jpg" style="max-width: 100%; max-height: 100%" />
+                                        }
+                                    }
+                                    catch
+                                    {
+                                    }
+                                </a>
+
+
+
+                            </li>
+
+                            iRow++;
+                            }
+
+                            }
+                            catch (Exception ex)
+                            {
+                            Console.Write(ex.ToString());
+                            }
+
+                            </ ul >
+                            </ div >
+
+
+
+                            <script>
+                                $(function () {
+
+
+                                    var demo1 = $("#demo1").slippry({
+                                        //transition: 'fade',
+                                        transition: 'horizontal',
+                                        useCSS: true,
+                                        //speed: 1000,
+                                        speed: 5000,
+                                        pause: 6000,
+                                        pager: false,
+                                        auto: true,
+                                        preload: 'visible',
+
+                                        // transitions
+                                        //transition: 'kenburns', // fade, horizontal, kenburns, false
+                                        kenZoom: 140,
+                                        speed: 2000 // time the transition takes (ms)
+
+
+
+                                    });
+
+                                    $('.init').click(function () {
+                                        demo1 = $("#demo1").slippry();
+                                        return false;
+                                    });
+
+
+
+
+                                });
+                            </script>
+
+
 
 
 

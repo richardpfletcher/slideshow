@@ -7,6 +7,7 @@ using Cook.Models;
 using Cook.API;
 using System.Net.Mail;
 using heartoflove.Models;
+using Stories.Factory;
 
 namespace whatscooking.Controllers
 {
@@ -15,21 +16,51 @@ namespace whatscooking.Controllers
         public ActionResult Index()
         {
 
-            MyFavoritesModel rmodel1 = new MyFavoritesModel();
-            List<MyFavoritesModel> items1 = new List<MyFavoritesModel>();
-            LatestPageRepository _LatestPagePageRepository = new LatestPageRepository();
-            items1 = _LatestPagePageRepository.GetModel();
+            //MyFavoritesModel rmodel1 = new MyFavoritesModel();
+            //List<MyFavoritesModel> items1 = new List<MyFavoritesModel>();
+            Stories.Factory.response items1 = new Stories.Factory.response();
 
-            ViewData["MyFavortiesData"] = items1;
+            GetLookups myGetLookups = new GetLookups();
+            items1 = myGetLookups.GeLookupAnimal();
+
+            Stories.Factory.AnimalTypeList MyFavoritesModel = new Stories.Factory.AnimalTypeList();
+
+            //var x = items1.data[0];
+            MyFavoritesModel =  items1.data[0] as Stories.Factory.AnimalTypeList;
+
+            List<Stories.Factory.AnimalTypeList> myList = new List<Stories.Factory.AnimalTypeList>();
+            AnimalTypeList list = new AnimalTypeList();
+
+            for (int i = 0; i < MyFavoritesModel.animalTypeLists.Count; i++)
+            {
+                animalType myanimalType = new animalType();
+                myanimalType.RECEIPTNO = MyFavoritesModel.animalTypeLists[i].RECEIPTNO;
+                myanimalType.Title = MyFavoritesModel.animalTypeLists[i].Title;
+                myanimalType.Comments = MyFavoritesModel.animalTypeLists[i].Comments;
+                myanimalType.Picture = MyFavoritesModel.animalTypeLists[i].Picture;
+                myanimalType.url = MyFavoritesModel.animalTypeLists[i].url;
+                list.animalTypeLists.Add(myanimalType);
+            }
+
+
+           
+
+                //ViewData["MyFavortiesData"] = items1.data[0];
+                ViewData["MyFavortiesData"] = list;
+
 
             string firstOne = null;
-            foreach (MyFavoritesModel s in items1)
-            {
-                firstOne = s.Title;
-                firstOne = firstOne.Substring(0, 1);
-                ViewData["firstOne"] = firstOne;
-                break;
-            }
+
+           
+
+
+            //foreach (MyFavoritesModel s in items1)
+            //{
+            //    firstOne = s.Title;
+            //    firstOne = firstOne.Substring(0, 1);
+            //    ViewData["firstOne"] = firstOne;
+            //    break;
+            //}
 
             return View();
         }

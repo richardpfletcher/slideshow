@@ -13,8 +13,11 @@ namespace Stories.Factory
 {
     public class animalType
     {
-        public string ID { get; set; }
-        public string AnimalType { get; set; }
+        public string RECEIPTNO { get; set; }
+        public string Title { get; set; }
+        public string Comments { get; set; }
+        public string Picture { get; set; }
+
 
     }
 
@@ -26,6 +29,61 @@ namespace Stories.Factory
         public AnimalTypeList()
         {
             animalTypeLists = new List<animalType>();
+        }
+    }
+
+    public class mothersHelpers
+    {
+        public string ID { get; set; }
+        public string Name { get; set; }
+        public string Email { get; set; }
+
+    }
+
+    public class MothersHelpersList
+    {
+        [XmlArray("mothersHelpers")]
+        [XmlArrayItem("mothersHelpers")]
+        public List<mothersHelpers> mothersHelpersLists { get; set; }
+        public MothersHelpersList()
+        {
+            mothersHelpersLists = new List<mothersHelpers>();
+        }
+    }
+
+    public class mothersHelpersType
+    {
+        public string ID { get; set; }
+        public string Name { get; set; }
+
+    }
+
+    public class MothersHelpersTypeList
+    {
+        [XmlArray("mothersHelpersType")]
+        [XmlArrayItem("mothersHelpersType")]
+        public List<mothersHelpersType> mothersHelpersTypeLists { get; set; }
+        public MothersHelpersTypeList()
+        {
+            mothersHelpersTypeLists = new List<mothersHelpersType>();
+        }
+    }
+
+    public class mothersHelpersSpecific
+    {
+        public string UserID { get; set; }
+        public string MothersHelpersType { get; set; }
+       
+    }
+
+    public class MothersHelpersSpecificList
+    {
+        [XmlArray("mothersHelpersSpecific")]
+        [XmlArrayItem("mothersHelpersSpecific")]
+        public List<mothersHelpersSpecific> mothersHelpersSpecificLists { get; set; }
+        public MothersHelpersSpecificList()
+        {
+            mothersHelpersSpecificLists = new List<mothersHelpersSpecific>();
         }
     }
 
@@ -84,7 +142,7 @@ namespace Stories.Factory
     }
 
 
-   
+
 
     public class youTube
     {
@@ -123,6 +181,27 @@ namespace Stories.Factory
     }
 
 
+    public class posted
+    {
+        public string ID { get; set; }
+        public string Posted { get; set; }
+
+    }
+
+    public class PostedList
+    {
+        [XmlArray("posted")]
+        [XmlArrayItem("posted")]
+        public List<posted> postedLists { get; set; }
+        public PostedList()
+        {
+            postedLists = new List<posted>();
+        }
+    }
+
+
+
+
     public class storyCategorytName
     {
         public string ID { get; set; }
@@ -148,13 +227,14 @@ namespace Stories.Factory
     {
         public string ID { get; set; }
         public string JakataID { get; set; }
+        public string UserID { get; set; }
         public string StoryCategorytName { get; set; }
         public string Title { get; set; }
         public string AnimalType { get; set; }
         public string MoralType { get; set; }
         public string Comments { get; set; }
         public string Stories { get; set; }
-      
+
 
 
     }
@@ -171,12 +251,64 @@ namespace Stories.Factory
     }
 
 
+    public class readersStory
+    {
+        public string ID { get; set; }
+        public string Name { get; set; }
+        public string UserID { get; set; }
+        public string JakataID { get; set; }
+        public string Comments { get; set; }
+
+        public string Title { get; set; }
+        public string Illustrations { get; set; }
+        public string Readers { get; set; }
+
+        public string Music { get; set; }
+
+        public string Dance { get; set; }
+        public string Admin { get; set; }
+        public string Posted { get; set; }
+        public string postedDate { get; set; }
+        public string illustrationStartDate { get; set; }
+        public string illustrationStopDate { get; set; }
+
+        public string ReadersStartDate { get; set; }
+        public string ReadersStopDate { get; set; }
+        public string MusicStartDate { get; set; }
+
+        public string MusicStopDate { get; set; }
+
+        public string DanceStartDate { get; set; }
+
+        public string DanceStopDate { get; set; }
+
+        
+        public string Mode { get; set; }
+
+
+
+
+    }
+
+    public class ReadersStoryList
+    {
+        [XmlArray("readersStory")]
+        [XmlArrayItem("readersStory")]
+        public List<readersStory> readersStory { get; set; }
+        public ReadersStoryList()
+        {
+            readersStory = new List<readersStory>();
+        }
+    }
+
+
+
 
     ////We have to include any custom derived classes using XmlInclude
     [XmlRoot("response")]
     //[XmlInclude(typeof(ProductCertificatesList))]
     [XmlInclude(typeof(AnimalTypeList))]
-    
+
     public class response
     {
         [XmlElement("result")]
@@ -209,6 +341,25 @@ namespace Stories.Factory
             return data;
         }
 
+        public IList AddMothersHelpersList(MothersHelpersList list)
+        {
+            data.Add(list);
+            return data;
+        }
+
+        public IList AddMothersHelpersSpecificList(MothersHelpersSpecificList list)
+        {
+            data.Add(list);
+            return data;
+        }
+
+        public IList AddMothersHelpersTypeList(MothersHelpersTypeList list)
+        {
+            data.Add(list);
+            return data;
+        }
+
+
         public IList AddStorySourceList(StorySourceList list)
         {
             data.Add(list);
@@ -234,6 +385,12 @@ namespace Stories.Factory
             return data;
         }
 
+        public IList AddPostedList(PostedList list)
+        {
+            data.Add(list);
+            return data;
+        }
+
         public IList AddYouTubeList(YouTubeList list)
         {
             data.Add(list);
@@ -245,6 +402,14 @@ namespace Stories.Factory
             data.Add(list);
             return data;
         }
+
+        public IList AddReadersStoryList(ReadersStoryList list)
+        {
+            data.Add(list);
+            return data;
+        }
+
+
 
 
         public IList AddStringData(string strData)
