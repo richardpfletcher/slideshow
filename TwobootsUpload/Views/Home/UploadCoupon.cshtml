@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "Uploaded File";
+    ViewBag.Title = "Uploaded Coupon File";
 }
 
 
@@ -16,6 +16,9 @@
 
     string background = (string)ViewData["filenameBackground"];
     bool picture1 = true;
+
+    string startDate =(string)ViewData["startDate"]  ;
+    string endDate = (string)ViewData["endDate"];
 
 
 
@@ -38,7 +41,7 @@
 
 
 
-        <h2>Uploaded File @title</h2>
+        <h2>Uploaded Coupon File @title</h2>
 
 
         <br />
@@ -82,6 +85,9 @@
                 {
 
                     @title <br />
+                    @startDate
+                    @endDate 
+
                     <img src="@filename" width="300" height="300" />
 
                     <table style="width: 55%">
@@ -108,6 +114,9 @@
 
 
                     </table>
+
+                   
+
 
                 }
 

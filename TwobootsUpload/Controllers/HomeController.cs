@@ -815,6 +815,141 @@ namespace Stories.Controllers
             return View();
         }
 
+
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult UploadCoupon(FormCollection form)
+        {
+
+            try
+            {
+                System.Web.HttpPostedFileBase httpPostedFileBase1 = base.Request.Files["FileData"];
+                string filename1check = httpPostedFileBase1.FileName;
+                string titleCheck = filename1check.Substring(0, filename1check.Length - 4);
+            }
+            catch
+            {
+
+                return RedirectToAction("..\\Home", "Coupon");
+                //return;
+            }
+
+            System.Web.HttpPostedFileBase httpPostedFileBase = base.Request.Files["FileData"];
+            string userID = base.Request.Form["idPhoto"];
+            string comments = base.Request.Form["comments"];
+            string url = base.Request.Form["url"];
+            string startDate = base.Request.Form["startDate"];
+            string endDate = base.Request.Form["endDate"];
+            string filename1 = httpPostedFileBase.FileName;
+            string picturename = base.Request.Form["picturename"];
+            string title = "";
+
+            if (picturename.Length > 0)
+            {
+                title = picturename;
+            }
+            else
+            {
+                title = filename1.Substring(0, filename1.Length - 4);
+
+            }
+
+
+            string text2 = base.Server.MapPath("~/images/" + System.IO.Path.GetFileName(httpPostedFileBase.FileName));
+            string value = string.Empty;
+            string text3 = System.IO.Path.GetExtension(httpPostedFileBase.FileName);
+            text3 = text3.ToLower();
+            GetStories myGetStories = new GetStories();
+
+            ViewData["filename1"] = filename1;
+            ViewData["title1"] = title;
+            ViewData["url"] = url;
+
+            ViewData["startDate"] = startDate;
+            ViewData["endDate"] = endDate;
+
+
+            if (userID == "" || userID == null)
+            {
+                return RedirectToAction("..\\Home","Coupon");
+                //return;
+
+            }
+
+            var email = myGetStories.GetMothersEmail(Convert.ToInt16(userID));
+
+
+            if (text3 == ".jpg" || text3 == ".gif" || text3 == ".png" || text3 == ".mp3" || text3 == ".mp4")
+            {
+                if (httpPostedFileBase.ContentLength > 0)
+                {
+                    //string filename = base.Server.MapPath("/images/upload/" + text + text3);
+                    //string filename = base.Server.MapPath("/images/" + filename1);
+                    string filename = "C:\\Users\\Richard\\Google Drive\\WebSites\\Twoboots\\images\\" + filename1;
+                    httpPostedFileBase.SaveAs(filename);
+
+                    DynamicParameters dynamicParameters = new DynamicParameters();
+
+
+                    dynamicParameters.Add("@Comments", comments, null, null, null);
+                    dynamicParameters.Add("@fileName", filename1, null, null, null);
+                    dynamicParameters.Add("@title", title, null, null, null);
+                    dynamicParameters.Add("@url", url, null, null, null);
+                    dynamicParameters.Add("@startDate", startDate, null, null, null);
+                    dynamicParameters.Add("@endDate", endDate, null, null, null);
+
+                    dynamicParameters.Add("@userID", System.Convert.ToInt16(userID), null, null, null);
+                    ConnectionStringSettings connectionStringSettings = ConfigurationManager.ConnectionStrings["LocalStory"];
+                    string connectionString = connectionStringSettings.ConnectionString;
+
+                    using (System.Data.SqlClient.SqlConnection sqlConnection = new System.Data.SqlClient.SqlConnection(connectionString))
+                    {
+                        sqlConnection.Open();
+                        const string storedProcedure = "dbo.InsertCoupon";
+                        var values = sqlConnection.Query<ReceipeTotalModel>(storedProcedure, dynamicParameters, commandType: CommandType.StoredProcedure);
+                    }
+
+                    using (MailMessage mail = new MailMessage())
+                    {
+                        mail.From = new MailAddress("JatakaFun@gmail.com");
+                        mail.To.Add(email);
+                        mail.Subject = "Thank you for your photo";
+                        mail.Body = "<h2>Thanks for uploading your file " + filename1 + " </h2>";
+                        mail.AlternateViews.Add(getEmbeddedImage(filename));
+                        mail.IsBodyHtml = true;
+                        //mail.Attachments.Add(new Attachment("C:\\file.zip"));
+
+                        using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                        {
+                            smtp.UseDefaultCredentials = false;
+                            smtp.EnableSsl = true;
+                            smtp.Credentials = new NetworkCredential("JatakaFun@gmail.com", "3Monkeys!");
+                            smtp.Send(mail);
+                        }
+                    }
+
+
+                    //return View();
+                    //return Redirect("..\\Home");
+                    //return RedirectToAction("..\\Home");
+                    //return RedirectToAction("Home", "Index");
+                }
+                else
+                {
+
+                    //return RedirectToAction("..\\Home");
+
+                }
+
+            }
+
+
+
+            return View();
+        }
+
+
+
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult UpdateUser(FormCollection form)
         {

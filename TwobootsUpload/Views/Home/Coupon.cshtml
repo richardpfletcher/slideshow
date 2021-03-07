@@ -1,5 +1,13 @@
 ﻿
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+<link src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/css/bootstrap-datepicker.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.6.4/js/bootstrap-datepicker.min.js"></script>
 
 <embed src="/Content/Fresca Pizza.mp3" loop="true" autostart="true" width="2"
        height="0">
@@ -17,82 +25,112 @@
 
     <div class="col-md-6">
 
-        @using (Html.BeginForm("UploadPicture", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        @using (Html.BeginForm("UploadCoupon", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
 
 
-        <table style="width: 55%">
+            <table style="width: 55%">
 
-            <tr>
-                <td>
-                    <h2>Upload Your Coupon File</h2>
-                </td>
+                <tr>
+                    <td>
+                        <h2>Upload Your Coupon File</h2>
+                    </td>
 
-            </tr>
+                </tr>
 
-            <tr>
-                <td>
-                    <p>Upload all new Coupon images. </p>
-                </td>
+                <tr>
+                    <td>
+                        <p>Upload all new Coupon images. </p>
+                    </td>
 
-            </tr>
+                </tr>
 
-            <tr>
-                <td>
-                    @Html.Label("Name of person uploading file")
-                </td>
+                <tr>
+                    <td>
+                        @Html.Label("Name of person uploading file")
+                    </td>
 
-            </tr>
-            <tr>
+                </tr>
+                <tr>
 
-                <td>
-                    @Html.DropDownList("newReader", (IEnumerable<SelectListItem>)ViewData["newReadersData"])
-                </td>
-            </tr>
+                    <td>
+                        @Html.DropDownList("newReader", (IEnumerable<SelectListItem>)ViewData["newReadersData"])
+                    </td>
+                </tr>
 
-            <tr>
-                <td>
-                    @Html.Label("Name of Dish Title for Coupon")
-                </td>
+                <tr>
+                    <td>
+                        @Html.Label("Name of Dish Title for Coupon")
+                    </td>
 
-            </tr>
-            <tr>
+                </tr>
 
-                <td>
-                    @Html.DropDownList("newDishTitle", (IEnumerable<SelectListItem>)ViewData["newdishData"])
-                </td>
-            </tr>
+                <tr>
 
-            <tr>
-                <td>
-                    @Html.Label("URL for picture when clicked")
-                </td>
+                    <td>
+                        @Html.DropDownList("newDishTitle", (IEnumerable<SelectListItem>)ViewData["newdishData"])
+                    </td>
+                </tr>
 
-            </tr>
-            <tr>
+                <tr>
+                    <td>
 
-                <td>
-                    <input type="text" id="url" name="url">
-
-                </td>
-            </tr>
-
-            <tr>
-                <td>
-                    @Html.Label("Picture Name")
-                </td>
-
-            </tr>
-            <tr>
-
-                <td>
-                    <input type="text" id="picturename" name="picturename">
-
-                </td>
-            </tr>
+                        Coupon Start Date
+                        <div class="input-group date" data-provide="datepicker-inline">
+                            <input type="text" id="StartDate" size="10" maxlength="9" class="form-control">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-th"></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
 
 
-        </table>
+                <tr>
+                    <td>
+
+                        Coupon Stop Date
+                        <div class="input-group date" data-date-format="mm/dd/yyyy" data-provide="datepicker-inline">
+                            <input type="text" id="StopDate" size="10" maxlength="9" class="form-control">
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-th"></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+
+
+                <tr>
+                    <td>
+                        @Html.Label("URL for picture when clicked")
+                    </td>
+
+                </tr>
+                <tr>
+
+                    <td>
+                        <input type="text" id="url" name="url">
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Picture Name")
+                    </td>
+
+                </tr>
+                <tr>
+
+                    <td>
+                        <input type="text" id="picturename" name="picturename">
+
+                    </td>
+                </tr>
+
+
+            </table>
 
 
             string idpic = (string)ViewData["id"];
@@ -106,8 +144,9 @@
             @*<input type="hidden" id="idPhoto" name="idPhoto" value="@idpic" />*@
             <input type="hidden" id="idPhoto" name="idPhoto" />
             <input type="hidden" id="comments" name="comments" />
-
            
+
+
 
             <input type="submit" id="UpdatePhoto" value="Upload File" />
 
@@ -118,16 +157,32 @@
 
 
 
-    </div>
+</div>
 
-    <script type="text/javascript">
-        $(function () {
-            $("#newReader").change(function () {
-                var selectedText = $(this).find("option:selected").text();
-                var selectedValue = $(this).val();
-                document.getElementById('idPhoto').value = selectedValue;
+<script type="text/javascript">
+    $(function () {
+        $("#newReader").change(function () {
+            var selectedText = $(this).find("option:selected").text();
+            var selectedValue = $(this).val();
+            document.getElementById('idPhoto').value = selectedValue;
 
 
-            });
         });
-    </script>
+    });
+</script>
+
+<script type="text/javascript">
+
+    $("#StartDate").datepicker({ format: "dd/mm/yyyy" });
+    $("#EndDate").datepicker({ format: "dd/mm/yyyy" });
+    
+
+</script>
+
+@*<script language="javascript" type="text/javascript">
+    function GetStopDate() {
+
+        var e = document.getElementById("StopDate").value;
+        alert(e);
+
+</script>*@
