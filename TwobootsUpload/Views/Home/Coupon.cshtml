@@ -1,0 +1,133 @@
+﻿
+
+
+<embed src="/Content/Fresca Pizza.mp3" loop="true" autostart="true" width="2"
+       height="0">
+
+
+<div class="row">
+
+    <div class="col-md-6">
+        <img src="/Content/twoboots.jpg" width="300" height="300" />
+
+
+
+
+    </div>
+
+    <div class="col-md-6">
+
+        @using (Html.BeginForm("UploadPicture", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+
+
+        <table style="width: 55%">
+
+            <tr>
+                <td>
+                    <h2>Upload Your Coupon File</h2>
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>
+                    <p>Upload all new Coupon images. </p>
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Name of person uploading file")
+                </td>
+
+            </tr>
+            <tr>
+
+                <td>
+                    @Html.DropDownList("newReader", (IEnumerable<SelectListItem>)ViewData["newReadersData"])
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Name of Dish Title for Coupon")
+                </td>
+
+            </tr>
+            <tr>
+
+                <td>
+                    @Html.DropDownList("newDishTitle", (IEnumerable<SelectListItem>)ViewData["newdishData"])
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("URL for picture when clicked")
+                </td>
+
+            </tr>
+            <tr>
+
+                <td>
+                    <input type="text" id="url" name="url">
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    @Html.Label("Picture Name")
+                </td>
+
+            </tr>
+            <tr>
+
+                <td>
+                    <input type="text" id="picturename" name="picturename">
+
+                </td>
+            </tr>
+
+
+        </table>
+
+
+            string idpic = (string)ViewData["id"];
+
+
+
+            <input type="file" id="FileData" name="FileData" />
+
+
+
+            @*<input type="hidden" id="idPhoto" name="idPhoto" value="@idpic" />*@
+            <input type="hidden" id="idPhoto" name="idPhoto" />
+            <input type="hidden" id="comments" name="comments" />
+
+           
+
+            <input type="submit" id="UpdatePhoto" value="Upload File" />
+
+        }
+
+
+    </div>
+
+
+
+    </div>
+
+    <script type="text/javascript">
+        $(function () {
+            $("#newReader").change(function () {
+                var selectedText = $(this).find("option:selected").text();
+                var selectedValue = $(this).val();
+                document.getElementById('idPhoto').value = selectedValue;
+
+
+            });
+        });
+    </script>

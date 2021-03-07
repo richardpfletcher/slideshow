@@ -30,6 +30,57 @@ namespace Stories.Factory
         private Dictionary<char, int> CharValues = null;
 
 
+        public string GetUpdateBackgroundSound()
+        {
+
+            var dataTable = new DataTable();
+            dataTable = new DataTable { TableName = "UpdateBackgroundSound" };
+            //var conString1 = ConfigurationManager.ConnectionStrings["LocalEvolution"];
+            //string connString = conString1.ConnectionString;
+            string connString = URLInfo.GetDataBaseConnectionString();
+
+
+            System.IO.StringWriter writer = new System.IO.StringWriter();
+            string returnString = "";
+            response response = new response();
+            response.result = 0;
+
+            string fileName = "";
+            using (System.Data.SqlClient.SqlConnection con = new System.Data.SqlClient.SqlConnection(connString))
+            {
+                using (System.Data.SqlClient.SqlCommand cmd = new System.Data.SqlClient.SqlCommand("GetUpdateBackgroundSound", con))
+                {
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    
+                    con.Open();
+                    var dataReader = cmd.ExecuteReader();
+                    dataTable.Load(dataReader);
+                    dataTable.WriteXml(writer, XmlWriteMode.WriteSchema, false);
+                    returnString = writer.ToString();
+                    int numberOfRecords = dataTable.Rows.Count;
+                    response.result = numberOfRecords;
+
+
+
+                    //MothersHelpersList list = new MothersHelpersList();
+                    foreach (DataRow row in dataTable.Rows)
+                    {
+                        //mothersHelpers myprod = new mothersHelpers();
+                        //myprod.ID = row["ID"].ToString();
+                        //myprod.Name = row["Name"].ToString();
+                        fileName = row["fileName"].ToString();
+
+
+                        //list.mothersHelpersLists.Add(myprod);
+                    }
+                    //response.AddMothersHelpersList(list);
+
+                    //response.log.Add(numberOfRecords + " Records found");
+
+                }
+            }
+            return fileName;
+        }
 
         /// <summary>
         /// Inserts a new account

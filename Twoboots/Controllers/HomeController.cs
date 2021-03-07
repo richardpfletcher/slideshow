@@ -23,6 +23,10 @@ namespace whatscooking.Controllers
             GetLookups myGetLookups = new GetLookups();
             items1 = myGetLookups.GeLookupAnimal();
 
+            GetStories myGetStories = new GetStories();
+            string fileName = myGetStories.GetUpdateBackgroundSound();
+            ViewData["BackgroundSound"] = fileName;
+
             Stories.Factory.AnimalTypeList MyFavoritesModel = new Stories.Factory.AnimalTypeList();
 
             //var x = items1.data[0];

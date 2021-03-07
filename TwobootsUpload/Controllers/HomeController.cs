@@ -19,6 +19,7 @@ using System.Web;
 using System.Xml.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using System.Net.Mime;
 
 namespace Stories.Controllers
 {
@@ -38,6 +39,33 @@ namespace Stories.Controllers
 
             ViewData["newReadersData"] = model.items;
 
+            GetStories myGetStories = new GetStories();
+            string fileName = myGetStories.GetUpdateBackgroundSound();
+            ViewData["BackgroundSound"] = fileName;
+
+            return View();
+        }
+
+        public ActionResult Coupon()
+        {
+            ViewBag.Title = "Home Page";
+
+
+            DropdownModel model = new DropdownModel();
+            GetLookups myGetLookups = new GetLookups();
+
+
+            model = myGetLookups.GeLookupCatUsers(0);
+           
+            ViewData["newReadersData"] = model.items;
+
+            DropdownModel modelDish = new DropdownModel();
+            modelDish = myGetLookups.GetDishTitle();
+            ViewData["newdishData"] = modelDish.items;
+
+            GetStories myGetStories = new GetStories();
+            string fileName = myGetStories.GetUpdateBackgroundSound();
+            ViewData["BackgroundSound"] = fileName;
 
             return View();
         }
@@ -510,11 +538,22 @@ namespace Stories.Controllers
 
             return View(myStory);
         }
-       
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult UploadPicture(FormCollection form)
+
+        private AlternateView getEmbeddedImage(String filePath)
         {
-            
+            // below line was corrected to include the mediatype so it displays in all 
+            // mail clients. previous solution only displays in Gmail the inline images 
+            LinkedResource res = new LinkedResource(filePath, MediaTypeNames.Image.Jpeg);
+            res.ContentId = Guid.NewGuid().ToString();
+            string htmlBody = @"<img src='cid:" + res.ContentId + @"'/>";
+            AlternateView alternateView = AlternateView.CreateAlternateViewFromString(htmlBody,
+             null, MediaTypeNames.Text.Html);
+            alternateView.LinkedResources.Add(res);
+            return alternateView;
+        }
+
+        public void UploadPictureFile(FormCollection form)
+        {
             try
             {
                 System.Web.HttpPostedFileBase httpPostedFileBase1 = base.Request.Files["FileData"];
@@ -524,9 +563,10 @@ namespace Stories.Controllers
             catch
             {
 
-                return RedirectToAction("..\\Home");
+                //return RedirectToAction("..\\Home");
+                return;
             }
-            
+
             System.Web.HttpPostedFileBase httpPostedFileBase = base.Request.Files["FileData"];
             string userID = base.Request.Form["idPhoto"];
             string comments = base.Request.Form["comments"];
@@ -535,7 +575,7 @@ namespace Stories.Controllers
             string picturename = base.Request.Form["picturename"];
             string title = "";
 
-            if (picturename.Length>0)
+            if (picturename.Length > 0)
             {
                 title = picturename;
             }
@@ -545,20 +585,22 @@ namespace Stories.Controllers
 
             }
 
-           
+
             string text2 = base.Server.MapPath("~/images/" + System.IO.Path.GetFileName(httpPostedFileBase.FileName));
             string value = string.Empty;
             string text3 = System.IO.Path.GetExtension(httpPostedFileBase.FileName);
             text3 = text3.ToLower();
             GetStories myGetStories = new GetStories();
-           
+
             ViewData["filename1"] = filename1;
             ViewData["title1"] = title;
+            ViewData["url"] = url;
 
 
-            if (userID == "" || userID ==null)
+            if (userID == "" || userID == null)
             {
-                return RedirectToAction("..\\Home");
+                //return RedirectToAction("..\\Home");
+                return;
 
             }
 
@@ -573,7 +615,7 @@ namespace Stories.Controllers
                     //string filename = base.Server.MapPath("/images/" + filename1);
                     string filename = "C:\\Users\\Richard\\Google Drive\\WebSites\\Twoboots\\images\\" + filename1;
                     httpPostedFileBase.SaveAs(filename);
-                    
+
                     DynamicParameters dynamicParameters = new DynamicParameters();
 
 
@@ -598,7 +640,8 @@ namespace Stories.Controllers
                         mail.From = new MailAddress("JatakaFun@gmail.com");
                         mail.To.Add(email);
                         mail.Subject = "Thank you for your photo";
-                        mail.Body = "<h2>Thanks for uploading your file "+ filename1+ " </h2>";
+                        mail.Body = "<h2>Thanks for uploading your file " + filename1 + " </h2>";
+                        mail.AlternateViews.Add(getEmbeddedImage(filename));
                         mail.IsBodyHtml = true;
                         //mail.Attachments.Add(new Attachment("C:\\file.zip"));
 
@@ -612,20 +655,163 @@ namespace Stories.Controllers
                     }
 
 
-                    return View();
+                    //return View();
                     //return Redirect("..\\Home");
                     //return RedirectToAction("..\\Home");
                     //return RedirectToAction("Home", "Index");
                 }
                 else
                 {
-                    
-                    return RedirectToAction("..\\Home");
+
+                    //return RedirectToAction("..\\Home");
 
                 }
 
             }
+
+        }
+
+        private AlternateView getEmbeddedmp3(String filePath)
+        {
+            // below line was corrected to include the mediatype so it displays in all 
+            // mail clients. previous solution only displays in Gmail the inline images 
+            LinkedResource res = new LinkedResource(filePath, MediaTypeNames.Image.Jpeg);
+            res.ContentId = Guid.NewGuid().ToString();
+            string htmlBody = @"<embed src='cid:" + res.ContentId + @"'/>";
+            AlternateView alternateView = AlternateView.CreateAlternateViewFromString(htmlBody,
+             null, MediaTypeNames.Text.Html);
+            alternateView.LinkedResources.Add(res);
+            return alternateView;
+        }
+
+
+        public void UploadBackgroundFile(FormCollection form)
+        {
+            try
+            {
+                System.Web.HttpPostedFileBase httpPostedFileBase1 = base.Request.Files["FileDataBackground"];
+                string filename1check = httpPostedFileBase1.FileName;
+                string titleCheck = filename1check.Substring(0, filename1check.Length - 4);
+            }
+            catch
+            {
+
+                //return RedirectToAction("..\\Home");
+                return;
+            }
+
+            System.Web.HttpPostedFileBase httpPostedFileBase = base.Request.Files["FileDataBackground"];
+            string userID = base.Request.Form["idPhoto"];
+            string filename1 = httpPostedFileBase.FileName;
+            string picturename = base.Request.Form["picturename"];
+            
+
+            string text2 = base.Server.MapPath("~/images/" + System.IO.Path.GetFileName(httpPostedFileBase.FileName));
+            string value = string.Empty;
+            string text3 = System.IO.Path.GetExtension(httpPostedFileBase.FileName);
+            text3 = text3.ToLower();
+            GetStories myGetStories = new GetStories();
+
            
+           
+
+            if (userID == "" || userID == null)
+            {
+                //return RedirectToAction("..\\Home");
+                return;
+
+            }
+
+            var email = myGetStories.GetMothersEmail(Convert.ToInt16(userID));
+
+
+            if (text3 == ".jpg" || text3 == ".gif" || text3 == ".png" || text3 == ".mp3" || text3 == ".mp4")
+            {
+                if (httpPostedFileBase.ContentLength > 0)
+                {
+                    //string filename = base.Server.MapPath("/images/upload/" + text + text3);
+                    //string filename = base.Server.MapPath("/images/" + filename1);
+                    string filename = "C:\\Users\\Richard\\Google Drive\\WebSites\\Twoboots\\Content\\" + filename1;
+                    httpPostedFileBase.SaveAs(filename);
+                    ViewData["filenameBackground"] = filename1;
+
+                    DynamicParameters dynamicParameters = new DynamicParameters();
+
+
+                    
+                    dynamicParameters.Add("@fileName", filename1, null, null, null);
+                    dynamicParameters.Add("@userID", System.Convert.ToInt16(userID), null, null, null);
+                    ConnectionStringSettings connectionStringSettings = ConfigurationManager.ConnectionStrings["LocalStory"];
+                    string connectionString = connectionStringSettings.ConnectionString;
+
+                    using (System.Data.SqlClient.SqlConnection sqlConnection = new System.Data.SqlClient.SqlConnection(connectionString))
+                    {
+                        sqlConnection.Open();
+                        const string storedProcedure = "dbo.InsertBackground";
+                        var values = sqlConnection.Query<ReceipeTotalModel>(storedProcedure, dynamicParameters, commandType: CommandType.StoredProcedure);
+                    }
+
+                    using (MailMessage mail = new MailMessage())
+                    {
+                        mail.From = new MailAddress("JatakaFun@gmail.com");
+                        mail.To.Add(email);
+                        mail.Subject = "Thank you for your background music";
+                        mail.Body = "<h2>Thanks for uploading your file " + filename1 + " </h2>";
+                        mail.AlternateViews.Add(getEmbeddedmp3(filename));
+                        mail.IsBodyHtml = true;
+                        //mail.Attachments.Add(new Attachment("C:\\file.zip"));
+
+                        using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                        {
+                            smtp.UseDefaultCredentials = false;
+                            smtp.EnableSsl = true;
+                            smtp.Credentials = new NetworkCredential("JatakaFun@gmail.com", "3Monkeys!");
+                            smtp.Send(mail);
+                        }
+                    }
+
+
+                    //return View();
+                    //return Redirect("..\\Home");
+                    //return RedirectToAction("..\\Home");
+                    //return RedirectToAction("Home", "Index");
+                }
+                else
+                {
+
+                    //return RedirectToAction("..\\Home");
+
+                }
+
+            }
+
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult UploadPicture(FormCollection form)
+        {
+
+            System.Web.HttpPostedFileBase httpPostedFileBase2 = base.Request.Files["FileData"];
+            string filename1check2 = httpPostedFileBase2.FileName;
+
+            if (filename1check2 !="")
+            {
+                UploadPictureFile(form);
+
+            }
+
+            System.Web.HttpPostedFileBase httpPostedFileBase3 = base.Request.Files["FileDataBackground"];
+            string filename1checkBackground = httpPostedFileBase3.FileName;
+
+            if (filename1checkBackground != "")
+            {
+                UploadBackgroundFile(form);
+                
+
+            }
+
+
+
             return View();
         }
 
