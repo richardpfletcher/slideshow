@@ -29,7 +29,23 @@ namespace Stories.Controllers
         {
             ViewBag.Title = "Home Page";
 
+            DropdownModel modelDay = new DropdownModel();
+
+            modelDay.items.Add(new SelectListItem { Text = "Please Select", Value = "0" });
+
+            string[] daysOfWeek = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday","Sunday" };
            
+
+            for (int i = 0; i < daysOfWeek.Length; i++)
+            {
+
+                modelDay.items.Add(new SelectListItem { Text = daysOfWeek[i], Value = daysOfWeek[i] });
+            }
+
+            ViewData["daysOfWeek"] = modelDay.items;
+
+
+
             DropdownModel model = new DropdownModel();
             GetLookups myGetLookups = new GetLookups();
 
@@ -836,6 +852,12 @@ namespace Stories.Controllers
 
             System.Web.HttpPostedFileBase httpPostedFileBase = base.Request.Files["FileData"];
             string userID = base.Request.Form["idPhoto"];
+            string dayOfWeek = base.Request.Form["idDayOfWeek"];
+            if (dayOfWeek== "Please Select")
+            {
+                dayOfWeek = "";
+            }
+
             string comments = base.Request.Form["comments"];
             string url = base.Request.Form["url"];
             string startDate = base.Request.Form["startDate"];
@@ -897,6 +919,7 @@ namespace Stories.Controllers
                     dynamicParameters.Add("@url", url, null, null, null);
                     dynamicParameters.Add("@startDate", startDate, null, null, null);
                     dynamicParameters.Add("@endDate", endDate, null, null, null);
+                    dynamicParameters.Add("@dayOfWeek", dayOfWeek, null, null, null);
 
                     dynamicParameters.Add("@userID", System.Convert.ToInt16(userID), null, null, null);
                     ConnectionStringSettings connectionStringSettings = ConfigurationManager.ConnectionStrings["LocalStory"];
