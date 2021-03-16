@@ -20,9 +20,13 @@ using System.Xml.Linq;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Mime;
+using MvcContrib.Filters;
+
 
 namespace Stories.Controllers
 {
+
+    [RequireHttps]
     public class HomeController : Controller
     {
         public ActionResult Index()
@@ -87,37 +91,214 @@ namespace Stories.Controllers
         }
 
 
+        public ActionResult CouponUpdateFinal(FormCollection form)
+        {
+            string ID = base.Request.Form["ID"];
+            string titleCoupon = base.Request.Form["TitleCoupon"];
+            string urlCoupon = base.Request.Form["urlCoupon"];
+            string pictureCoupon = base.Request.Form["PictureCoupon"];
+            string startDate = base.Request.Form["StartDate1"];
+            string endDate = base.Request.Form["StopDate1"];
+            string dayOfWeek = base.Request.Form["idDayOfWeek"];
+            string dishID = base.Request.Form["dishID"];
+
+
+            GetStories myGetStories = new GetStories();
+            myGetStories.UpdateCoupon(Convert.ToInt32(ID), titleCoupon, urlCoupon, pictureCoupon, startDate, endDate, dayOfWeek, dishID);
+
+            string mode = "save";
+            Session["Mode"] = mode;
+                     
+
+            return RedirectToAction("CouponUpdate", "Home", new { ID = Convert.ToInt32(ID) });
+
+           
+        }
+
+
+        public ActionResult CouponUpdate(int ID)
+        {
+            ViewData["ID"] = ID;
+
+            Stories.Factory.response items1 = new Stories.Factory.response();
+
+            GetLookups myGetLookups = new GetLookups();
+            items1 = myGetLookups.GeLookupCoupon(ID);
+
+            GetStories myGetStories = new GetStories();
+            string fileName = myGetStories.GetUpdateBackgroundSound();
+            ViewData["BackgroundSound"] = fileName;
+
+            Stories.Factory.CouponList MyFavoritesModel = new Stories.Factory.CouponList();
+
+            //var x = items1.data[0];
+            MyFavoritesModel = items1.data[0] as Stories.Factory.CouponList;
+
+            List<Stories.Factory.CouponList> myList = new List<Stories.Factory.CouponList>();
+            CouponList list = new CouponList();
+
+            coupon mycoupon = new coupon();
+
+            for (int i = 0; i < MyFavoritesModel.couponLists.Count; i++)
+            {
+                mycoupon = new coupon();
+                mycoupon.dayOfWeek = MyFavoritesModel.couponLists[i].dayOfWeek.Trim();
+                mycoupon.endDate = MyFavoritesModel.couponLists[i].endDate;
+                mycoupon.expired = MyFavoritesModel.couponLists[i].expired;
+                mycoupon.id = MyFavoritesModel.couponLists[i].id;
+                mycoupon.PictureCoupon = MyFavoritesModel.couponLists[i].PictureCoupon;
+                mycoupon.DishID = MyFavoritesModel.couponLists[i].DishID;
+
+
+
+                mycoupon.startDate = MyFavoritesModel.couponLists[i].startDate;
+                mycoupon.TitleCoupon = MyFavoritesModel.couponLists[i].TitleCoupon;
+                mycoupon.urlCoupon = MyFavoritesModel.couponLists[i].urlCoupon;
+                
+
+                list.couponLists.Add(mycoupon);
+
+                //ViewData["RECEIPTNO"]
+            }
+
+
+            DropdownModel modelDay = new DropdownModel();
+
+            modelDay.items.Add(new SelectListItem { Text = "Please Select", Value = "0" });
+
+            string[] daysOfWeek = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+
+
+            for (int i = 0; i < daysOfWeek.Length; i++)
+            {
+
+                modelDay.items.Add(new SelectListItem { Text = daysOfWeek[i], Value = daysOfWeek[i] });
+            }
+
+            //foreach (SelectListItem s in modelDay.items)
+            //{
+            //    if (s.Value == mycoupon.dayOfWeek.Trim())
+            //    {
+            //        s.Selected = true;
+            //    }
+            //}
+
+
+            for (int i = 0; i < modelDay.items.Count(); i++)
+            {
+
+                //modelDish.items[i].Value
+
+                if (modelDay.items[i].Value == mycoupon.dayOfWeek.Trim())
+                {
+                    modelDay.items[i].Selected = true;
+                }
+
+            }
+
+
+            ViewData["daysOfWeek"] = modelDay.items;
+
+            //ViewData["daysOfWeek"] = mycoupon.dayOfWeek;
+
+            DropdownModel modelDish = new DropdownModel();
+            modelDish = myGetLookups.GetDishTitle();
+
+            for (int i = 0; i < modelDish.items.Count(); i++)
+            {
+                
+                //modelDish.items[i].Value
+
+                if (modelDish.items[i].Value == mycoupon.DishID)
+                {
+                    modelDish.items[i].Selected = true;
+                }
+
+            }
+
+
+
+            ViewData["newdishData"] = modelDish.items;
+
+
+            return View(mycoupon);
+        }
+
+
+        
+
+
+        public ActionResult DishUpdateFinal(FormCollection form)
+        {
+            string ID = base.Request.Form["ID"];
+            string title = base.Request.Form["title"];
+            string url = base.Request.Form["url"];
+            string picture = base.Request.Form["picture"];
+
+            GetStories myGetStories = new GetStories();
+            myGetStories.UpdateDish(Convert.ToInt32(ID), title, url, picture);
+        
+            string mode = "save";
+            Session["Mode"] = mode;
+
+            return RedirectToAction("DishUpdate", "Home", new { ID= Convert.ToInt32(ID) });
+
+            //return View();
+        }
+
+        //[PassParametersDuringRedirect]
+        //[AcceptGet]
+
+        public ActionResult DishUpdate(int ID)
+        {
+
+            ViewData["ID"] = ID;
+
+            Stories.Factory.response items1 = new Stories.Factory.response();
+
+            GetLookups myGetLookups = new GetLookups();
+            items1 = myGetLookups.GeLookupAnimal(ID);
+
+            GetStories myGetStories = new GetStories();
+            string fileName = myGetStories.GetUpdateBackgroundSound();
+            ViewData["BackgroundSound"] = fileName;
+
+            Stories.Factory.AnimalTypeList MyFavoritesModel = new Stories.Factory.AnimalTypeList();
+
+            //var x = items1.data[0];
+            MyFavoritesModel = items1.data[0] as Stories.Factory.AnimalTypeList;
+
+            List<Stories.Factory.AnimalTypeList> myList = new List<Stories.Factory.AnimalTypeList>();
+            AnimalTypeList list = new AnimalTypeList();
+
+            animalType myanimalType = new animalType();
+
+            for (int i = 0; i < MyFavoritesModel.animalTypeLists.Count; i++)
+            {
+                myanimalType = new animalType();
+                myanimalType.RECEIPTNO = MyFavoritesModel.animalTypeLists[i].RECEIPTNO;
+                myanimalType.Title = MyFavoritesModel.animalTypeLists[i].Title;
+                myanimalType.Comments = MyFavoritesModel.animalTypeLists[i].Comments;
+                myanimalType.Picture = MyFavoritesModel.animalTypeLists[i].Picture;
+                myanimalType.url = MyFavoritesModel.animalTypeLists[i].url;
+                list.animalTypeLists.Add(myanimalType);
+
+                //ViewData["RECEIPTNO"]
+            }
+
+
+            return View(myanimalType);
+        }
+
+
         public ActionResult Insert()
         {
             ViewBag.Message = "Your app description page.";
 
-            DropdownModel model = new DropdownModel();
-            DropdownModel modelAnimal = new DropdownModel();
-            GetLookups myGetLookups = new GetLookups();
-            model = myGetLookups.GeLookupAnimal();
-            ViewData["animalTypeData"] = model.items;
-
-            Story myStory = new Story();
-            myStory.animalCombo = model;
-
-            //modelAnimal = model;
-
-            model = myGetLookups.GeLookupMoral();
-            ViewData["moralTypeData"] = model.items;
-
-            model = myGetLookups.GeLookupStorySource();
-            ViewData["storySourceData"] = model.items;
-
-            model = myGetLookups.GeLookupJakataMaster();
-            ViewData["jakataMasterData"] = model.items;
-
-            model = myGetLookups.GetStoryCategorytName();
-            ViewData["StoryCategorytNameData"] = model.items;
+            
 
 
-
-
-            return View(myStory);
+            return View();
 
         }
 
@@ -128,169 +309,14 @@ namespace Stories.Controllers
         /// <returns></returns>
         public ActionResult Update(int row)
         {
-            Story myStory = new Story();
-            DropdownModel model = new DropdownModel();
-            GetLookups myGetLookups = new GetLookups();
-            Story modelStory = new Story();
-            modelStory = myGetLookups.GetSpecificStory(row, "JakataID");
-
-            var ID1 = modelStory.ID.ToString();
-            ViewData["id"] = ID1;
-
-            var JakataID = modelStory.JakataID;
-            var JakataIDString = modelStory.JakataID.ToString();
-            ViewData["JakataID"] = JakataIDString;
-
-            var Comments = modelStory.Comments;
-            var Moraltype = modelStory.MoralType;
-            var Stories = modelStory.Stories;
-            var StoryCategorytName = modelStory.StoryCategorytName;
-            var Title = modelStory.Title;
-
-            ViewData["comments"] = Comments;
-            ViewData["Stories"] = Stories;
-            ViewData["searchResults"] = row;
-
-
-
-
-
-            model = myGetLookups.GeLookupSpecificStoryDropdown();
-            //DropdownModel model = new DropdownModel();
-            model = myGetLookups.GeLookupAnimal();
-
-
-            var AnimalType = modelStory.AnimalType;
-
-            AnimalType = AnimalType.Trim();
-
-            if (AnimalType.EndsWith(","))
-            {
-                AnimalType = AnimalType.Remove(AnimalType.Length - 1, 1);
-            }
-
-            string[] Animalchosen = AnimalType.Split(',');
-            //model = new DropdownModel();
-
-            model = myGetLookups.GeLookupAnimal();
-
-            for (int i = 0; i < Animalchosen.Length; i++)
-            {
-                var x = Animalchosen[i];
-
-
-                foreach (SelectListItem s in model.items)
-                {
-                    if (s.Value == x)
-                    {
-                        s.Selected = true;
-                    }
-                }
-
-
-            }
-
-
-
-
-            ViewData["animalTypeData"] = model.items;
-
-
-            myStory.animalCombo = model;
-
-            GetLookups myYouTubeGetLookups = new GetLookups();
-            model = myYouTubeGetLookups.GetYouTube(JakataID, 0);
-            //ViewData["youTubeData"] = model.items;
-            myStory.youTubeCombo = model;
-
-
-
-
-            //modelAnimal = model;
-            DropdownModel modelMoral = new DropdownModel();
-
-            //modelMoral = myGetLookups.GeLookupMoral();
-            model = myGetLookups.GeLookupMoral();
-
-            var moral = Moraltype.ToString();
-
-            foreach (SelectListItem s in model.items)
-            {
-                if (s.Value == moral)
-                {
-                    s.Selected = true;
-                }
-            }
-
-
-            ViewData["moralTypeData1"] = model.items;
-
-            myStory.moralCombo = model;
-
-
-
-            model = myGetLookups.GeLookupStorySource();
-            ViewData["storySourceData"] = model.items;
-
-            model = myGetLookups.GeLookupJakataMaster();
-
-            var title = JakataID.ToString();
-
-            foreach (SelectListItem s in model.items)
-            {
-                if (s.Value == title)
-                {
-                    s.Selected = true;
-                }
-            }
-
-
-            ViewData["jakataMasterData"] = model.items;
-
-
-            // titles done
-            model = myGetLookups.GetStatus(1);
-            ViewData["Done"] = model.items;
-            myStory.done = model;
-
-            model = myGetLookups.GetStatus(0);
-            myStory.toDo = model;
-            ViewData["ToDo"] = model.items;
-            myStory.Stories = Stories;
-
-            model = myGetLookups.GetStoryCategorytName();
-
-            StoryCategorytName = modelStory.StoryCategorytName;
-
-            foreach (SelectListItem s in model.items)
-            {
-                if (s.Value == StoryCategorytName.ToString())
-                {
-                    s.Selected = true;
-                    modelStory.StoryCategorytNameString = s.Text;
-
-                    if (s.Value == "0")
-                    {
-                        modelStory.StoryCategorytNameString = "";
-                    }
-                }
-            }
-
-            myStory.StoryCategorytNameCombo = model;
-
-
-
-            return View(myStory);
+            
+            return View();
         }
 
         public ActionResult UpdateStory()
         {
             ViewBag.Message = "Your app description page.";
-            DropdownModel model = new DropdownModel();
-            GetLookups myGetLookups = new GetLookups();
-
-            model = myGetLookups.GeLookupSpecificStoryDropdown();
-            ViewData["jakataMasterData"] = model.items;
+            
 
 
 
@@ -649,24 +675,40 @@ namespace Stories.Controllers
                         sqlConnection.Open();
                         const string storedProcedure = "dbo.InsertPicture";
                         var values = sqlConnection.Query<ReceipeTotalModel>(storedProcedure, dynamicParameters, commandType: CommandType.StoredProcedure);
-                    }
+                        //}
 
-                    using (MailMessage mail = new MailMessage())
-                    {
-                        mail.From = new MailAddress("JatakaFun@gmail.com");
-                        mail.To.Add(email);
-                        mail.Subject = "Thank you for your photo";
-                        mail.Body = "<h2>Thanks for uploading your file " + filename1 + " </h2>";
-                        mail.AlternateViews.Add(getEmbeddedImage(filename));
-                        mail.IsBodyHtml = true;
-                        //mail.Attachments.Add(new Attachment("C:\\file.zip"));
+                        int lastRecord = 0;
 
-                        using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+
+
+                        foreach (ReceipeTotalModel v in values)
                         {
-                            smtp.UseDefaultCredentials = false;
-                            smtp.EnableSsl = true;
-                            smtp.Credentials = new NetworkCredential("JatakaFun@gmail.com", "3Monkeys!");
-                            smtp.Send(mail);
+                            lastRecord = v.totalReceipesInt;
+                        }
+
+
+                        using (MailMessage mail = new MailMessage())
+                        {
+                            mail.From = new MailAddress("JatakaFun@gmail.com");
+                            mail.To.Add(email);
+                            mail.Subject = "Thank you for your photo";
+                            //mail.Body = "<h2>Thanks for uploading your file " + filename1 + " </h2>";
+                            string connect =ConfigurationManager.ConnectionStrings["LocalURI"].ConnectionString;
+
+                            mail.Body = "<h1>"+connect+"Home/DishUpdate/?id=" + lastRecord + "</h1><h2>Thanks for uploading your file " + filename1 + " </h2>";
+                            //mail.Body = "<h1>https://localhost:44385/Home/DishUpdate/?id=" + lastRecord + "</h1><h2>Thanks for uploading your file " + filename1 + " </h2>";
+
+                            //mail.AlternateViews.Add(getEmbeddedImage(filename));
+                            mail.IsBodyHtml = true;
+                            //mail.Attachments.Add(new Attachment("C:\\file.zip"));
+
+                            using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                            {
+                                smtp.UseDefaultCredentials = false;
+                                smtp.EnableSsl = true;
+                                smtp.Credentials = new NetworkCredential("JatakaFun@gmail.com", "3Monkeys!");
+                                smtp.Send(mail);
+                            }
                         }
                     }
 
@@ -925,29 +967,50 @@ namespace Stories.Controllers
                     ConnectionStringSettings connectionStringSettings = ConfigurationManager.ConnectionStrings["LocalStory"];
                     string connectionString = connectionStringSettings.ConnectionString;
 
+
                     using (System.Data.SqlClient.SqlConnection sqlConnection = new System.Data.SqlClient.SqlConnection(connectionString))
                     {
                         sqlConnection.Open();
                         const string storedProcedure = "dbo.InsertCoupon";
                         var values = sqlConnection.Query<ReceipeTotalModel>(storedProcedure, dynamicParameters, commandType: CommandType.StoredProcedure);
-                    }
 
-                    using (MailMessage mail = new MailMessage())
-                    {
-                        mail.From = new MailAddress("JatakaFun@gmail.com");
-                        mail.To.Add(email);
-                        mail.Subject = "Thank you for your photo";
-                        mail.Body = "<h2>Thanks for uploading your file " + filename1 + " </h2>";
-                        mail.AlternateViews.Add(getEmbeddedImage(filename));
-                        mail.IsBodyHtml = true;
-                        //mail.Attachments.Add(new Attachment("C:\\file.zip"));
+                        int lastRecord = 0;
+                        
+                       
 
-                        using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                        foreach (ReceipeTotalModel v in values)
                         {
-                            smtp.UseDefaultCredentials = false;
-                            smtp.EnableSsl = true;
-                            smtp.Credentials = new NetworkCredential("JatakaFun@gmail.com", "3Monkeys!");
-                            smtp.Send(mail);
+                            lastRecord = v.totalReceipesInt;
+                        }
+
+
+                        //}
+
+
+
+                        using (MailMessage mail = new MailMessage())
+                        {
+                            mail.From = new MailAddress("JatakaFun@gmail.com");
+                            mail.To.Add(email);
+                            mail.Subject = "Thank you for your photo";
+
+                            string connect = ConfigurationManager.ConnectionStrings["LocalURI"].ConnectionString;
+
+                            mail.Body = "<h1>" + connect + "Home/DishUpdate/?id=" + lastRecord + "</h1><h2>Thanks for uploading your file " + filename1 + " </h2>";
+
+
+                            //mail.Body = "<h1>https://localhost:44385/Home/CouponUpdate/?id=" + lastRecord + "></h1><h2>Thanks for uploading your file " + filename1 + " </h2>";
+                            //mail.AlternateViews.Add(getEmbeddedImage(filename));
+                            mail.IsBodyHtml = true;
+                            //mail.Attachments.Add(new Attachment("C:\\file.zip"));
+
+                            using (SmtpClient smtp = new SmtpClient("smtp.gmail.com", 587))
+                            {
+                                smtp.UseDefaultCredentials = false;
+                                smtp.EnableSsl = true;
+                                smtp.Credentials = new NetworkCredential("JatakaFun@gmail.com", "3Monkeys!");
+                                smtp.Send(mail);
+                            }
                         }
                     }
 

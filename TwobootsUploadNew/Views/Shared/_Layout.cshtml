@@ -12,6 +12,9 @@
     <link href="~/Content/Site.css?seed=7" rel="stylesheet" />
     @*<script src="~/Scripts/jquery.min.js"></script>*@
 
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <meta name="google-signin-client_id" content="610406505706-paeb9v7t8forrsbtbt5tu1q2n84gu5ov.apps.googleusercontent.com">
+
     <link href='https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/ui-lightness/jquery-ui.css'
           rel='stylesheet'>
 
@@ -23,8 +26,8 @@
 
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <style>
         /*.dropdown-submenu {
             position: relative;
@@ -86,9 +89,12 @@
 
                 <nav class="navbar navbar-default" role="navigation">
                     <div class="container-fluid">
-                          <section id="login">
-                          @Html.Partial("_LoginPartial")
-                          </section>
+
+                        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+
+                        <section id="login">
+                         @Html.Partial("_LoginPartial")
+                        </section>
 
                         <!-- Brand and toggle get grouped for better mobile display -->
                         <div class="navbar-header">
@@ -101,9 +107,9 @@
                             @*<a class="navbar-brand" href="#">Brand</a>*@
                         </div>
 
-                        <section id="login">
-                            @Html.Partial("_LoginPartial")
-                        </section>
+                        @*<section id="login">
+            @Html.Partial("_LoginPartial")
+        </section>*@
 
                         <!-- Collect the nav links, forms, and other content for toggling -->
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">

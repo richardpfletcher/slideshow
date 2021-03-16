@@ -50,6 +50,12 @@
       <HintPath>bin\Dapper.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Web.Mvc, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mvc2Futures.2.0.50217.0\lib\Microsoft.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="MvcContrib, Version=2.0.95.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvcContrib.2.0.95.0\lib\MvcContrib.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -186,10 +192,17 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Comments.cshtml" />
+    <Content Include="Views\Home\CouponUpdate.cshtml" />
+    <Content Include="Views\Home\DishUpdate.cshtml" />
+    <Content Include="Views\Home\UploadCoupon.cshtml" />
+    <Content Include="Views\Home\UploadPicture.cshtml" />
+    <Content Include="Views\Home\DishUpdateFinal.cshtml" />
+    <Content Include="Views\Home\Coupon.cshtml" />
+    <Content Include="Views\Home\CouponUpdateFinal.cshtml" />
+    <Content Include="Views\Shared\_LoginPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

@@ -59,9 +59,11 @@ catch
             Stories.Factory.AnimalTypeList list = new Stories.Factory.AnimalTypeList();
             list = ViewData["MyFavortiesData"] as Stories.Factory.AnimalTypeList;
 
+
             for (int i = 0; i < list.animalTypeLists.Count; i++)
             {
 
+                int page = i + 1;
 
                 if (title.ToUpper() != list.animalTypeLists[i].Title.Substring(0, 1).ToUpper())
                 {
@@ -97,7 +99,7 @@ catch
                 <li>
 
                     <br />
-                    <h2 style="color:white;">@list.animalTypeLists[i].Title &nbsp;&nbsp;&nbsp;&nbsp; <label style="color:blue;">East Village Phone 212-254-1919 </label> </h2>
+                    <h2 style="color:white;">Page:@page @list.animalTypeLists[i].Title &nbsp;&nbsp;&nbsp;&nbsp; <label style="color:blue;">East Village Phone 212-254-1919 </label> </h2>
 
 
 
@@ -107,26 +109,26 @@ catch
                     <a href="@link1">
 
                         @try
-                        {
+                                    {
 
 
 
-                            string image = list.animalTypeLists[i].Picture;
-                            if (image.Length > 0)
-                            {
-                                //string imagePath = "/images/";
-                                string imagePath = "https://twoboots.today/images/";
+                                string image = list.animalTypeLists[i].Picture;
+                                if (image.Length > 0)
+                                {
+                                    //string imagePath = "/images/";
+                                    string imagePath = "https://twoboots.today/images/";
 
                                 <img src="@imagePath@image" style="max-width: 100%; max-height: 100%" />
-                            }
-                            else
-                            {
+                                }
+                                else
+                                {
                                 <img src="../Images/bowl.jpg" style="max-width: 100%; max-height: 100%" />
+                                }
                             }
-                        }
                         catch
-                        {
-                        }
+                    {
+                    }
                     </a>
 
 
@@ -134,9 +136,9 @@ catch
                 </li>
 
                 iRow++;
-            }
+                }
 
-        }
+            }
         catch (Exception ex)
         {
             Console.Write(ex.ToString());
