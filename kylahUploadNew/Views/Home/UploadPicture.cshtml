@@ -1,0 +1,121 @@
+﻿
+@{
+    ViewBag.Title = "Uploaded File";
+}
+
+
+
+@{
+
+    string filename1 = (string)ViewData["filename1"];
+    //filename1 = filename1 + " Uploaded";
+
+    string filename = "https://twoboots.today/images/" + filename1;
+    string title = (string)ViewData["title1"];
+    string url = (string)ViewData["url"];
+
+    string background = (string)ViewData["filenameBackground"];
+    bool picture1 = true;
+
+
+
+    if (title == null)
+    {
+        picture1 = false;
+
+    }
+
+
+
+    bool background1 = true;
+    if (background == null)
+    {
+        background1 = false;
+
+    }
+
+
+
+
+
+        <h2>Uploaded File @title</h2>
+
+
+        <br />
+
+
+
+        <div class="row">
+
+
+
+            <div class="col-md-6">
+
+
+                <img src="/Content/twoboots.jpg" width="300" height="300" />
+
+
+
+
+
+
+            </div>
+
+           
+
+            <div class="col-md-6">
+                @if (background1 == true)
+                {
+                    @background <br />
+                    <audio controls>
+                        <source src="https://twoboots.today//Content//@background" type="audio/mp3">
+
+                    </audio>
+                }
+
+                <br />
+
+               
+
+
+                @if (picture1 == true)
+                {
+
+                    @title <br />
+                    <img src="@filename" width="300" height="300" />
+
+                    <table style="width: 55%">
+
+                        @if (@url == null)
+                        {
+
+                            <tr>
+                                <td>
+                                    @Html.Label("URL for picture when clicked")
+                                </td>
+
+                            </tr>
+                        <tr>
+
+                            <td>
+                                @url
+
+                            </td>
+                        </tr>
+                        }
+
+
+
+
+                    </table>
+
+                }
+
+
+
+            </div>
+
+
+
+        </div>
+    }
