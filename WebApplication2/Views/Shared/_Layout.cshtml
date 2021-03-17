@@ -92,9 +92,9 @@
 
                         @*<div class="g-signin2" data-onsuccess="onSignIn"></div>*@
 
-                        <section id="login">
-                            @Html.Partial("_LoginPartial")
-                        </section>
+                        @*<section id="login">
+            @Html.Partial("_LoginPartial")
+        </section>*@
 
                         <!-- Brand and toggle get grouped for better mobile display -->
                         <div class="navbar-header">
@@ -105,6 +105,18 @@
                                 <span class="icon-bar"></span>
                             </button>
                             @*<a class="navbar-brand" href="#">Brand</a>*@
+                        </div>
+
+                        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                            <ul class="nav navbar-nav">
+                                <li>@Html.ActionLink("Slide", "Index", "Home")</li>
+                                <li>@Html.ActionLink("Coupon", "Coupon", "Home")</li>
+
+
+
+                                <!-- .dropdown -->
+                            </ul>
+                            <!-- .nav .navbar-nav -->
                         </div>
 
 

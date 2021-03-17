@@ -4,7 +4,9 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Configuration;
 using System.Web.Mvc;
+using System.Web.Security;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -57,6 +59,7 @@ namespace WebApplication2.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
+                        
             ViewBag.ReturnUrl = returnUrl;
             return View();
         }
@@ -355,6 +358,17 @@ namespace WebApplication2.Controllers
 
                 Console.Write(ex.ToString());
             }
+
+            return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = "" });
+        }
+
+        private void LogEntry(string text)
+        {
+            //var folder = @"C:\Users\Richard\Google Drive\projects\SlideShow\WebApplication2\App_Data";
+            var folder = @"C:\Users\Richard\Google Drive\WebSites\TwobootsUpload\App_Data";
+            var logfilename = $@"{folder}\logs.txt";
+            if(System.IO.Directory.Exists(folder))
+                System.IO.File.AppendAllText(logfilename, $"{DateTime.Now}\t{text}\r\n");
         }
 
         //
@@ -364,35 +378,57 @@ namespace WebApplication2.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
         {
-            if (User.Identity.IsAuthenticated)
+            try
             {
-                return RedirectToAction("Index", "Manage");
-            }
+                LogEntry("Starting ExternalLoginConfirmation");
 
-            if (ModelState.IsValid)
-            {
-                // Get the information about the user from the external login provider
-                var info = await AuthenticationManager.GetExternalLoginInfoAsync();
-                if (info == null)
+                if (User.Identity.IsAuthenticated)
                 {
-                    return View("ExternalLoginFailure");
+                    LogEntry("IsAuthenticated was true, exiting");
+                    return RedirectToAction("Index", "Manage");
                 }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user);
-                if (result.Succeeded)
+
+                if (ModelState.IsValid)
                 {
-                    result = await UserManager.AddLoginAsync(user.Id, info.Login);
+                    LogEntry("ModelState.IsValid was true");
+
+                    // Get the information about the user from the external login provider
+                    var info = await AuthenticationManager.GetExternalLoginInfoAsync();
+                    if (info == null)
+                    {
+                        LogEntry("Error: info was null.");
+                        return View("ExternalLoginFailure");
+                    }
+                    var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                    LogEntry("Calling CreateAsync");
+                    LogEntry($"info.Email: {info.Email}");
+
+                    var result = await UserManager.CreateAsync(user);
+                    LogEntry("Called CreateAsync");
                     if (result.Succeeded)
                     {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                        return RedirectToLocal(returnUrl);
-                    }
-                }
-                AddErrors(result);
-            }
+                        LogEntry("Error: result.Succeeded.");
 
-            ViewBag.ReturnUrl = returnUrl;
-            return View(model);
+                        result = await UserManager.AddLoginAsync(user.Id, info.Login);
+                        if (result.Succeeded)
+                        {
+                            await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                            return RedirectToLocal(returnUrl);
+                        }
+                    }
+                    AddErrors(result);
+                }
+
+                LogEntry($"Return URL: {returnUrl}");
+
+                ViewBag.ReturnUrl = returnUrl;
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                LogEntry(ex.ToString());//replace with something like Serilog
+                throw;
+            }
         }
 
         //
@@ -401,7 +437,17 @@ namespace WebApplication2.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult LogOff()
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+
+            //AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie);
+
+            if (Request.Cookies[DefaultAuthenticationTypes.ExternalCookie] != null)
+            {
+                HttpCookie myCookie = new HttpCookie(DefaultAuthenticationTypes.ExternalCookie);
+                myCookie.Expires = DateTime.Now.AddDays(-1d);
+                Response.Cookies.Add(myCookie);
+            }
+
             return RedirectToAction("Index", "Home");
         }
 

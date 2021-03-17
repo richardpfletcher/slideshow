@@ -1,0 +1,130 @@
+﻿@model Stories.Factory.animalType
+
+@{
+    ViewBag.Title = "DishUpdate";
+}
+
+<h2>Dish Update</h2>
+
+@try
+{
+    int ID = (int)ViewData["ID"];
+
+    string connect = System.Configuration.ConfigurationManager.ConnectionStrings["LocalURI"].ConnectionString;
+    string filename = connect+"images/" + Model.Picture;
+
+    //string filename = "https://twoboots.today/images/" + Model.Picture;
+    string title = Model.Title;
+
+    var Mode = Session["Mode"] as string;
+
+    if (Mode =="save")
+    {
+        <h2 style="color: red;">Record is saved</h2>
+
+    }
+
+    string mode = "";
+    Session["Mode"] = mode;
+
+
+
+
+
+<div class="row">
+
+    <div class="col-md-6">
+
+        <h2>@title</h2> <br />
+        <img src="@filename" width="300" height="300" />
+
+
+
+
+
+    </div>
+
+    <div class="col-md-6">
+
+        @using (Html.BeginForm("DishUpdateFinal", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+
+
+            <table style="width: 55%">
+
+                <tr>
+                    <td>
+                        <h2>Edit Your PostFile</h2>
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Title")
+                    </td>
+
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.TextBoxFor(model => model.Title, new { id = "title" })
+
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        @Html.Label("URL for picture when clicked")
+                    </td>
+
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.TextBoxFor(model => model.url, new { id = "url" })
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        @Html.Label("Picture Name")
+                    </td>
+
+                </tr>
+                <tr>
+
+                    <td>
+                        @Html.TextBoxFor(model => model.Picture, new { id = "picture" })
+
+                    </td>
+                </tr>
+
+
+            </table>
+
+            <input type="submit" id="SaveChanges" value="Save Changes" />
+
+            <input type="hidden" id="ID" name="ID" value="@Model.RECEIPTNO" />
+            <input type="hidden" id="mode" name="mode" value="save" />
+
+
+
+
+        }
+
+
+    </div>
+
+
+
+</div>
+
+}
+catch
+{
+}
+
+
