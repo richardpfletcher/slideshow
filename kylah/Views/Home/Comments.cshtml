@@ -1,0 +1,53 @@
+﻿
+
+@model heartoflove.Models.EmailModel
+
+
+<h2>Comments</h2>
+@using (Html.BeginForm("\\home\\CommentsPost"))
+{
+    @Html.ValidationSummary(true)
+    <div>
+        We would love to hear from you. If you have any suggestions to make this a better
+        place please send us an email. We strive to make this a better place to visit and
+        share.
+    </div>
+    <fieldset>
+
+        @{
+            string message = (string)ViewData["message"]; }
+        <h2>
+            <b>
+                @message
+            </b>
+        </h2>
+
+
+
+        <br />
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Email)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Email)
+            @Html.ValidationMessageFor(model => model.Email)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Comments)
+        </div>
+        <div class="editor-field">
+            @Html.TextAreaFor(model => model.Comments, new { style = "width: 550px ;height: 350px " })
+
+            @Html.ValidationMessageFor(model => model.Comments)
+        </div>
+        <p>
+            <input type="submit" value="Send Email" />
+        </p>
+    </fieldset>
+}
+<div>
+    @Html.ActionLink("Home", "Index")
+</div>
+
+
+
