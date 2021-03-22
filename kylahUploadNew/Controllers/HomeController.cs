@@ -21,7 +21,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Net.Mime;
 using MvcContrib.Filters;
-
+using System.Data.SqlTypes;
 
 namespace Stories.Controllers
 {
@@ -29,8 +29,21 @@ namespace Stories.Controllers
     [RequireHttps]
     public class HomeController : Controller
     {
+
+        private void LogEntry(string text)
+        {
+            //var folder = @"C:\Users\Richard\Google Drive\projects\SlideShow\WebApplication2\App_Data";
+            var folder = @"C:\Users\Richard\Google Drive\WebSites\kylahUploadNew\App_Data";
+            var logfilename = $@"{folder}\logs.txt";
+            if (System.IO.Directory.Exists(folder))
+                System.IO.File.AppendAllText(logfilename, $"{DateTime.Now}\t{text}\r\n");
+        }
+
+       
         public ActionResult Index()
         {
+
+            try { 
             ViewBag.Title = "Home Page";
 
             
@@ -46,6 +59,14 @@ namespace Stories.Controllers
             GetStories myGetStories = new GetStories();
             string fileName = myGetStories.GetUpdateBackgroundSound();
             ViewData["BackgroundSound"] = fileName;
+            //LogEntry("We made it this for");//replace with something like Serilog
+            }
+            catch (Exception ex)
+            {
+                LogEntry(ex.ToString());//replace with something like Serilog
+                throw;
+            }
+
 
             return View();
         }
@@ -655,7 +676,7 @@ namespace Stories.Controllers
                 {
                     //string filename = base.Server.MapPath("/images/upload/" + text + text3);
                     //string filename = base.Server.MapPath("/images/" + filename1);
-                    string filename = "C:\\Users\\Richard\\Google Drive\\WebSites\\Twoboots\\images\\" + filename1;
+                    string filename = "C:\\Users\\Richard\\Google Drive\\WebSites\\kylah\\images\\" + filename1;
                     httpPostedFileBase.SaveAs(filename);
 
                     DynamicParameters dynamicParameters = new DynamicParameters();
@@ -745,6 +766,11 @@ namespace Stories.Controllers
 
         public void UploadBackgroundFile(FormCollection form)
         {
+
+            LogEntry("UploadBackgroundFile");
+
+
+
             try
             {
                 System.Web.HttpPostedFileBase httpPostedFileBase1 = base.Request.Files["FileDataBackground"];
@@ -757,6 +783,9 @@ namespace Stories.Controllers
                 //return RedirectToAction("..\\Home");
                 return;
             }
+
+            try
+            {
 
             System.Web.HttpPostedFileBase httpPostedFileBase = base.Request.Files["FileDataBackground"];
             string userID = base.Request.Form["idPhoto"];
@@ -789,7 +818,7 @@ namespace Stories.Controllers
                 {
                     //string filename = base.Server.MapPath("/images/upload/" + text + text3);
                     //string filename = base.Server.MapPath("/images/" + filename1);
-                    string filename = "C:\\Users\\Richard\\Google Drive\\WebSites\\Twoboots\\Content\\" + filename1;
+                    string filename = "C:\\Users\\Richard\\Google Drive\\WebSites\\kylah\\Content\\" + filename1;
                     httpPostedFileBase.SaveAs(filename);
                     ViewData["filenameBackground"] = filename1;
 
@@ -842,19 +871,32 @@ namespace Stories.Controllers
                 }
 
             }
+            }
+            catch (Exception ex)
+            {
+                LogEntry(ex.ToString());//replace with something like Serilog
+                throw;
+            }
 
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult UploadPicture(FormCollection form)
         {
+            try
+
+            {
+
+            LogEntry("UploadPicture");
+
 
             System.Web.HttpPostedFileBase httpPostedFileBase2 = base.Request.Files["FileData"];
             string filename1check2 = httpPostedFileBase2.FileName;
 
             if (filename1check2 != "")
             {
-                UploadPictureFile(form);
+                    LogEntry("filename1check2"+ filename1check2);
+                    UploadPictureFile(form);
 
             }
 
@@ -863,9 +905,17 @@ namespace Stories.Controllers
 
             if (filename1checkBackground != "")
             {
-                UploadBackgroundFile(form);
+                    LogEntry("filename1checkBackground" + filename1checkBackground);
+                    UploadBackgroundFile(form);
 
 
+            }
+
+            }
+            catch (Exception ex)
+            {
+                LogEntry(ex.ToString());//replace with something like Serilog
+                throw;
             }
 
 
@@ -892,6 +942,10 @@ namespace Stories.Controllers
                 //return;
             }
 
+            try
+            {
+
+          
             System.Web.HttpPostedFileBase httpPostedFileBase = base.Request.Files["FileData"];
             string userID = base.Request.Form["idPhoto"];
             string dayOfWeek = base.Request.Form["idDayOfWeek"];
@@ -949,18 +1003,54 @@ namespace Stories.Controllers
                 {
                     //string filename = base.Server.MapPath("/images/upload/" + text + text3);
                     //string filename = base.Server.MapPath("/images/" + filename1);
-                    string filename = "C:\\Users\\Richard\\Google Drive\\WebSites\\Twoboots\\images\\" + filename1;
+                    string filename = "C:\\Users\\Richard\\Google Drive\\WebSites\\kylah\\images\\" + filename1;
                     httpPostedFileBase.SaveAs(filename);
 
                     DynamicParameters dynamicParameters = new DynamicParameters();
+                    //SqlDateTime sqldatenull;
+                    //sqldatenull = SqlDateTime.Null;
+
+                   LogEntry("start date "+startDate);
+                   LogEntry("end date " + endDate);
+
+                        if (startDate=="")
+                    {
+
+                            LogEntry("start date is null" + startDate);
+                            //dynamicParameters.Add("@startDate", null, null, null, null);
+
+                    }
+                    else
+                    {
+                            LogEntry("start date is not null" + startDate);
+                            //dynamicParameters.Add("@startDate", startDate, null, null, null);
+
+                            dynamicParameters.Add("@startDate", startDate, (DbType?)SqlDbType.DateTime, null, null);
+
+                        }
+
+                    if (endDate == "")
+                    {
+
+                            LogEntry("end date is null" + endDate);
+                            //dynamicParameters.Add("@endDate", sqldatenull, null, null, null);
+                            //dynamicParameters.Add("@endDate", null, (DbType?)SqlDbType.DateTime, null, null);
+
+                        }
+                    else
+                    {
+                            LogEntry("end date is not null" + endDate);
+                            dynamicParameters.Add("@endDate", endDate, null, null, null);
+
+                    }
 
 
                     dynamicParameters.Add("@Comments", comments, null, null, null);
                     dynamicParameters.Add("@fileName", filename1, null, null, null);
                     dynamicParameters.Add("@title", title, null, null, null);
                     dynamicParameters.Add("@url", url, null, null, null);
-                    dynamicParameters.Add("@startDate", startDate, null, null, null);
-                    dynamicParameters.Add("@endDate", endDate, null, null, null);
+                    
+                    //dynamicParameters.Add("@endDate", endDate, null, null, null);
                     dynamicParameters.Add("@dayOfWeek", dayOfWeek, null, null, null);
 
                     dynamicParameters.Add("@userID", System.Convert.ToInt16(userID), null, null, null);
@@ -1028,6 +1118,13 @@ namespace Stories.Controllers
                 }
 
             }
+            }
+            catch (Exception ex)
+            {
+                LogEntry(ex.ToString());//replace with something like Serilog
+                throw;
+            }
+
 
 
 

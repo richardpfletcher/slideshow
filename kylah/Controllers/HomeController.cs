@@ -13,11 +13,23 @@ namespace whatscooking.Controllers
 {
     public class HomeController : Controller
     {
+
+        private void LogEntry(string text)
+        {
+            //var folder = @"C:\Users\Richard\Google Drive\projects\SlideShow\WebApplication2\App_Data";
+            var folder = @"C:\Users\Richard\Google Drive\WebSites\kylah\App_Data";
+            var logfilename = $@"{folder}\logs.txt";
+            if (System.IO.Directory.Exists(folder))
+                System.IO.File.AppendAllText(logfilename, $"{DateTime.Now}\t{text}\r\n");
+        }
+
         public ActionResult Index()
         {
 
-            //MyFavoritesModel rmodel1 = new MyFavoritesModel();
-            //List<MyFavoritesModel> items1 = new List<MyFavoritesModel>();
+            try
+            { 
+
+            
             Stories.Factory.response items1 = new Stories.Factory.response();
 
             GetLookups myGetLookups = new GetLookups();
@@ -55,16 +67,23 @@ namespace whatscooking.Controllers
 
             string firstOne = null;
 
-           
 
 
-            //foreach (MyFavoritesModel s in items1)
-            //{
-            //    firstOne = s.Title;
-            //    firstOne = firstOne.Substring(0, 1);
-            //    ViewData["firstOne"] = firstOne;
-            //    break;
-            //}
+
+                //foreach (MyFavoritesModel s in items1)
+                //{
+                //    firstOne = s.Title;
+                //    firstOne = firstOne.Substring(0, 1);
+                //    ViewData["firstOne"] = firstOne;
+                //    break;
+                //}
+
+            }
+            catch (Exception ex)
+            {
+                LogEntry(ex.ToString());//replace with something like Serilog
+                throw;
+            }
 
             return View();
         }

@@ -500,7 +500,7 @@ namespace Stories.Factory
             {
                 var env = ConfigurationManager.AppSettings["Enviroment"];
                 var settings = "";
-                var uri = new Uri("http://api.twoboots.today/api/MothersHelpers/getMothersHelpersTypeUsers?id=" + id);
+                var uri = new Uri("http://api.kylah.today/api/MothersHelpers/getMothersHelpersTypeUsers?id=" + id);
 
 
                 if (env == "Dev")
@@ -512,7 +512,7 @@ namespace Stories.Factory
                 else
                 {
                     settings = ConfigurationManager.AppSettings["ProductionWebApi"];
-                    uri = new Uri("http://api.twoboots.today/api/MothersHelpers/getMothersHelpersTypeUsers?id=" + id);
+                    uri = new Uri("http://api.kylah.today/api/MothersHelpers/getMothersHelpersTypeUsers?id=" + id);
 
 
                 }
@@ -576,19 +576,19 @@ namespace Stories.Factory
             {
                 var env = ConfigurationManager.AppSettings["Enviroment"];
                 var settings = "";
-                var uri = new Uri("https://api.twoboots.today/api/DishTitle");
+                var uri = new Uri("https://api.kylah.today/api/DishTitle");
 
 
                 if (env == "Dev")
                 {
                     settings = ConfigurationManager.AppSettings["LocalWebApi"];
-                    uri = new Uri("http://localhost:5199/api/DishTitle/get");
+                    uri = new Uri("http://localhost:44385/api/DishTitle/get");
 
                 }
                 else
                 {
                     settings = ConfigurationManager.AppSettings["ProductionWebApi"];
-                    uri = new Uri("https://api.twoboots.today/api/DishTitle");
+                    uri = new Uri("https://api.kylah.today/api/DishTitle");
 
 
                 }

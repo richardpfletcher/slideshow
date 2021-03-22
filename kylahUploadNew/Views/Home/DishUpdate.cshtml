@@ -1,10 +1,10 @@
 ﻿@model Stories.Factory.animalType
 
 @{
-    ViewBag.Title = "DishUpdate";
+    ViewBag.Title = "Slide Update";
 }
 
-<h2>Dish Update</h2>
+<h2>Slide Update</h2>
 
 @try
 {
@@ -12,8 +12,9 @@
 
     string connect = System.Configuration.ConfigurationManager.ConnectionStrings["LocalURI"].ConnectionString;
     string filename = connect+"images/" + Model.Picture;
+    //string filename = "C:\\Users\\Richard\\Google Drive\\WebSites\\kylah\\images\\" + Model.Picture;
 
-    //string filename = "https://twoboots.today/images/" + Model.Picture;
+    //string filename = "https://kylah.today/images/" + Model.Picture;
     string title = Model.Title;
 
     var Mode = Session["Mode"] as string;
@@ -105,7 +106,7 @@
 
             </table>
 
-            <input type="submit" id="SaveChanges" value="Save Changes" />
+            <input type="submit" id="SaveChanges" value="Publish" />
 
             <input type="hidden" id="ID" name="ID" value="@Model.RECEIPTNO" />
             <input type="hidden" id="mode" name="mode" value="save" />

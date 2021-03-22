@@ -17,12 +17,32 @@ namespace Stories.Controllers
     public class AnimalTypeController : ApiController
     {
 
+        private void LogEntry(string text)
+        {
+            //var folder = @"C:\Users\Richard\Google Drive\projects\SlideShow\WebApplication2\App_Data";
+            var folder = @"C:\Users\Richard\Google Drive\WebSites\kylahAPI\App_Data";
+            var logfilename = $@"{folder}\logs.txt";
+            if (System.IO.Directory.Exists(folder))
+                System.IO.File.AppendAllText(logfilename, $"{DateTime.Now}\t{text}\r\n");
+        }
 
         public response Get()
         {
 
-            GetStories myStories = new GetStories();
-            return myStories.GetAnimal();
+           
+
+            try
+            {
+
+                GetStories myStories = new GetStories();
+                return myStories.GetAnimal();
+            }
+            catch (Exception ex)
+            {
+                LogEntry(ex.ToString());//replace with something like Serilog
+                throw;
+            }
+            //return View();
 
 
 

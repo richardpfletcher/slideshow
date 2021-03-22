@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>@ViewBag.Title - Storytelling</title>
+    <title>@ViewBag.Title - api.kylah.today</title>
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width" />
 
@@ -70,7 +70,7 @@
     <header>
         <div class="content-wrapper">
             <div class="float-left">
-                <p class="site-title">@Html.ActionLink("Storytelling", "Index", "Home")</p>
+                <p class="site-title">@Html.ActionLink("api.kylah.today", "Index", "Home")</p>
             </div>
             <div class="float-left">
 
@@ -112,16 +112,7 @@
             @RenderBody()
         </section>
     </div>
-    <footer>
-        <div class="content-wrapper">
-            <div class="float-left">
-                <p>&copy; @DateTime.Now.Year - Storytelling</p>
-                @*<iframe src="https://www.facebook.com/plugins/like.php?href=http://www.evolutionrevolutionoflove.com/"
-                        scrolling="no" frameborder="0" style="border: none; width: 450px; height: 80px"></iframe>*@
-            </div>
-        </div>
-    </footer>
-
+   
     @Scripts.Render("~/bundles/jquery")
     @RenderSection("scripts", required: false)
 </body>
