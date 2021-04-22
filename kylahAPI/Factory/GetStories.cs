@@ -610,6 +610,7 @@ namespace Stories.Factory
                         mothersHelpers myprod = new mothersHelpers();
                         myprod.ID = row["ID"].ToString();
                         myprod.Name = row["Name"].ToString();
+                        myprod.Email = row["Email"].ToString();
 
 
                         list.mothersHelpersLists.Add(myprod);
