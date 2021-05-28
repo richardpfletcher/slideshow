@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kylahAPI", "kylahAPI\kylahA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kylahUploadNew", "kylahUploadNew\kylahUploadNew.csproj", "{9F5207EA-D393-4095-9845-0649864DF29B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cookin", "cookin\cookin.csproj", "{FF0DD320-090F-435D-A1D6-6E31881D15EE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,10 @@ Global
 		{9F5207EA-D393-4095-9845-0649864DF29B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F5207EA-D393-4095-9845-0649864DF29B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F5207EA-D393-4095-9845-0649864DF29B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF0DD320-090F-435D-A1D6-6E31881D15EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF0DD320-090F-435D-A1D6-6E31881D15EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF0DD320-090F-435D-A1D6-6E31881D15EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF0DD320-090F-435D-A1D6-6E31881D15EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

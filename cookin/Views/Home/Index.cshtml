@@ -1,0 +1,134 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<head>
+  
+
+
+</head>
+
+
+<div style="text-align: right; color:white;font-size: medium" ;>
+    cookin.today
+</div>
+
+@using (Html.BeginForm("Search", "Home", FormMethod.Post, new { id = "search" }))
+{
+    <table>
+        <tr>
+        </tr>
+
+        <tr>
+            <td>
+                @Html.Label("Ethnicity")
+            </td>
+            <td>
+                @Html.DropDownList("ethnicCode", (IEnumerable<SelectListItem>)ViewData["ethnicData"], new { @style = "width:200px;", @onchange = "GetTopic();" })
+
+                @*<button hidden type="submit" id="search" value="Register" name="ActionRegister">
+                    Search
+                </button>*@
+
+            </td>
+
+        </tr>
+    </table>
+
+}
+
+@Html.Partial("SearchView")
+
+
+
+
+
+<script>
+    function CopyRingToClipboard(url) {
+        var copyText = url;
+        /* Select the text field */
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); /* For mobile devices */
+        /* Copy the text inside the text field */
+        document.execCommand("copy");
+    }
+</script>
+
+@*<script>
+        $(function () {
+            var demo1 = $("#demo1").slippry({
+                // transition: 'fade',
+                // useCSS: true,
+                // speed: 1000,
+                // pause: 3000,
+                // auto: true,
+                // preload: 'visible',
+                // autoHover: false
+            });
+
+            $('.stop').click(function () {
+                demo1.stopAuto();
+            });
+
+            $('.start').click(function () {
+                demo1.startAuto();
+            });
+
+            $('.prev').click(function () {
+                demo1.goToPrevSlide();
+                return false;
+            });
+            $('.next').click(function () {
+                demo1.goToNextSlide();
+                return false;
+            });
+            $('.reset').click(function () {
+                demo1.destroySlider();
+                return false;
+            });
+            $('.reload').click(function () {
+                demo1.reloadSlider();
+                return false;
+            });
+            $('.init').click(function () {
+                demo1 = $("#demo1").slippry();
+                return false;
+            });
+        });
+    </script>*@
+
+<script language="javascript" type="text/javascript">
+    function GetTopic() {
+
+      
+
+        var ethnicCode = document.getElementById("ethnicCode").value;
+
+       
+        var resultJSON = {
+            ethnicCode: ethnicCode
+        };
+
+        $.ajax({
+            url: "/Home/Search",
+            data: resultJSON,
+            dataType: "json",
+            type: "POST",
+            cache: false,
+            success: function (result) {
+                var domElement = $(result); // create element from html
+                console.log(result);
+                $("#centerdivResults").empty().append(domElement); // append to end of list
+            }
+        });
+
+        return;
+
+        return;
+
+    }
+</script>
+
+
+
+
