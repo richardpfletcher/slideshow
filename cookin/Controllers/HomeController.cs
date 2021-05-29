@@ -43,6 +43,8 @@ namespace cookin.Controllers
             }
 
             return PartialView("SearchView", items1);
+            //return RedirectToAction("Index", "Home");
+            //return View();
             
         }
 
