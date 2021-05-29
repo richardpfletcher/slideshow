@@ -41,7 +41,15 @@
 
 <div id="centerdivResults">
 
-    <div style="width: 50%">
+    <div class="col-md-2">
+        <div>
+
+        </div>
+        <div>
+
+        </div>
+    </div>
+    <div class="col-md-8">
         <ul id="demo1">
 
             @try
@@ -74,7 +82,7 @@
                     <li>
                         <h2 style="color:white;">@winner.Title &nbsp;&nbsp;&nbsp;&nbsp; <label style="color:blue;">select image for info</label> </h2>
 
-                        <a href="https://whatscookingtreasures.com/Home/Display?row=@winner.RECEIPTNO" target="_blank" >
+                        <a href="https://whatscookingtreasures.com/Home/Display?row=@winner.RECEIPTNO" target="_blank">
                             @try
                             {
                                 string image = winner.picture;
@@ -108,6 +116,14 @@
             }
 
         </ul>
+    </div>
+    <div class="col-md-2">
+        <div>
+
+        </div>
+        <div>
+
+        </div>
     </div>
 </div>
 
