@@ -19,9 +19,9 @@
 </style>
 
 
-<div style="text-align: right; color:white;font-size: medium" ;>
+@*<div style="text-align: right; color:white;font-size: medium" ;>
     cookin.today
-</div>
+</div>*@
 
 @using (Html.BeginForm("Search", "Home", FormMethod.Post, new { id = "search" }))
 {
@@ -31,7 +31,10 @@
 
         <tr>
             <td>
-                @Html.Label("Ethnicity")
+                
+                <label style="color:white;font-size: medium">
+                    Ethnicity
+                </label>
             </td>
             <td>
                 @Html.DropDownList("ethnicCode", (IEnumerable<SelectListItem>)ViewData["ethnicData"], new { @style = "width:200px;", @onchange = "GetTopic();" })
